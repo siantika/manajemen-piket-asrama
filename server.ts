@@ -1,9 +1,9 @@
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import dotenv from 'dotenv';
-import morgan from 'morgan';
 import helmet from 'helmet';
 import cors from 'cors';
+import { logger } from './src/utils/logger';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -14,7 +14,6 @@ const app = express();
 // Middleware setup
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(morgan('combined')); // Logging HTTP requests
 app.use(helmet()); // Set security headers
 app.use(cors()); // Enable CORS
 
@@ -22,23 +21,20 @@ app.use(cors()); // Enable CORS
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes setup
-// import indexRouter from './src/routes/index';
-// import usersRouter from './src/routes/users';
-
-// app.use('/', indexRouter);
-// app.use('/users', usersRouter);
-app.get('/', (req:any, res:any) => {
-    res.send('Hello Piket Asrama!');
+app.get('/', (req: Request, res: Response) => {
+  res.send('Hello Piket Asrama!');
+  logger.info("visitted");
 });
 
 // Error handling middleware
-app.use((err:any, req:any, res:any, next:any) => {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+  logger.error(err.stack);
 });
 
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
