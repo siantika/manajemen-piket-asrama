@@ -22,13 +22,13 @@ app.use(cors()); // Enable CORS
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes setup
-// import indexRouter from './routes/index';
-// import usersRouter from './routes/users';
+// import indexRouter from './src/routes/index';
+// import usersRouter from './src/routes/users';
 
 // app.use('/', indexRouter);
 // app.use('/users', usersRouter);
 app.get('/', (req:any, res:any) => {
-    res.send('Hello asasdsaddsa!');
+    res.send('Hello Piket Asrama!');
 });
 
 // Error handling middleware
