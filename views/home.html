@@ -1,0 +1,51 @@
+<!-- views/layout.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jadwal Piket Asrama Viyata Tirtagangga</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <nav class="navbar navbar-light bg-light">
+      <div class="container">
+        <a class="navbar-brand" href="#">
+          <img
+            src="/img/logo.png"
+            width="30"
+            height="30"
+            class="d-inline-block align-top"
+            alt=""
+          />
+          Your Logo
+        </a>
+        <span class="navbar-text"> Login as admin </span>
+      </div>
+    </nav>
+
+    <div class="jumbotron">
+      <div class="container">
+        <h1 class="display-4">Asrama Viyata Tirtagangga</h1>
+        <p class="lead">Ini adalah jumbotron/banner Anda.</p>
+      </div>
+    </div>
+
+    <div class="container">
+      <p class="text-right">Tanggal Piket: 17 Juli 2024</p>
+
+      <!-- Tempat untuk menyisipkan konten spesifik halaman -->
+      {{{ body }}}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
