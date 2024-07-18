@@ -22,8 +22,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes setup
 app.get('/', (req: Request, res: Response) => {
-  res.send('Hello Piket Asrama!');
-  logger.info("visitted");
+  res.sendFile(path.join(__dirname, 'views', 'home.html'));
 });
 
 // Error handling middleware
