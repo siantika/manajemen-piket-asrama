@@ -1,5 +1,3 @@
-<!-- views/layout.html -->
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -14,35 +12,89 @@
     <link rel="stylesheet" href="/css/style.css" />
   </head>
   <body>
-    <nav class="navbar navbar-light bg-light">
-      <div class="container">
-        <a class="navbar-brand" href="#">
+    <!-- navbar -->
+    <nav class="navbar navbar-light bg-primary">
+      <div class="container d-flex justify-content-between align-items-center">
+        <a class="navbar-brand d-flex align-items-center" href="#">
           <img
-            src="/img/logo.png"
-            width="30"
-            height="30"
-            class="d-inline-block align-top"
-            alt=""
+            src="/img/amvt.jpg"
+            width="60"
+            height="60"
+            class="d-inline-block align-top img-fluid"
+            alt="Your Logo"
           />
-          Your Logo
+          <span class="ml-2">Asrama Viyata Tirtagangga</span>
         </a>
-        <span class="navbar-text"> Login as admin </span>
+        <a href="/admin.html">
+          <span class="navbar-text text-white">Login as admin</span></a
+        >
       </div>
     </nav>
 
-    <div class="jumbotron">
-      <div class="container">
-        <h1 class="display-4">Asrama Viyata Tirtagangga</h1>
-        <p class="lead">Ini adalah jumbotron/banner Anda.</p>
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container text-center">
+        <h1 class="display-4">Jadwal Piket Penghuni Asrama</h1>
+        <p class="lead">Bali, 17 Juli 2024</p>
       </div>
     </div>
 
-    <div class="container">
-      <p class="text-right">Tanggal Piket: 17 Juli 2024</p>
-
-      <!-- Tempat untuk menyisipkan konten spesifik halaman -->
-      {{{ body }}}
+    <!-- daftar piket untuk anggota -->
+    <div class="container" id="daftarPiket" style="padding-top: 50px">
+      <div class="row">
+        <div class="col-md-6 offset-md-3">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Nama Penghuni</h5>
+              <p class="card-text">Tugas Piket: Shift Pagi</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Nama Penghuni</h5>
+              <p class="card-text">Tugas Piket: Shift Siang</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Nama Penghuni</h5>
+              <p class="card-text">Tugas Piket: Shift Malam</p>
+            </div>
+          </div>
+          <!-- Add more cards as needed -->
+        </div>
+      </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="footer mt-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 text-center">
+            <h5>Contact Us</h5>
+            <p>Email: -</p>
+            <p>Phone: -</p>
+          </div>
+          <div class="col-md-6 text-center">
+            <h5>Follow Us</h5>
+            <ul class="list-unstyled">
+              <li>
+                <a href="https://www.facebook.com/asramabaliviyata/"
+                  >Facebook</a
+                >
+              </li>
+              <li>
+                <a href="https://www.instagram.com/asramabaliviyata/"
+                  >Instagram</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="text-center mt-3">
+          <p>&copy; 2024 Asrama Viyata Tirtagangga. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
