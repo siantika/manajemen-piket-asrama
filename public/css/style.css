@@ -56,12 +56,13 @@
     margin-bottom: 0.5rem; /* Atur sesuai kebutuhan */
   }
 
-  .card:nth-child(odd) .card-body {
+  .col-md-12:nth-child(odd) .card-body {
     background-color: #e3f2fd;
   }
-  .card:nth-child(even) .card-body {
+  .col-md-12:nth-child(even) .card-body {
     background-color: #bbdefb;
   }
+  
 
   .footer {
     background-color: #007bff;

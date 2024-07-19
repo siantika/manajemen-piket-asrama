@@ -1,81 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jadwal Piket Asrama Viyata Tirtagangga</title>
-  <link href="/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="/css/style.css" />
-</head>
-<body>
-  <!-- navbar -->
-  <nav class="navbar navbar-light bg-primary">
-    <div class="container d-flex justify-content-between align-items-center">
-      <a class="navbar-brand d-flex align-items-center" href="#">
-        <img src="/img/amvt.jpg" width="60" height="60" class="d-inline-block align-top img-fluid" alt="Your Logo" />
-        <span class="ml-2">Asrama Viyata Tirtagangga</span>
-      </a>
-      <a href="/admin.html">
-        <span class="navbar-text text-white">Login as admin</span>
-      </a>
-    </div>
-  </nav>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jadwal Piket Asrama Viyata Tirtagangga</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <!-- navbar -->
+    <nav class="navbar navbar-light bg-primary">
+      <div class="container d-flex justify-content-between align-items-center">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+          <img
+            src="/img/amvt.jpg"
+            width="60"
+            height="60"
+            class="d-inline-block align-top img-fluid"
+            alt="Your Logo"
+          />
+          <span class="ml-2">Asrama Viyata Tirtagangga</span>
+        </a>
+        <a href="/admin.html">
+          <span class="navbar-text text-white">Login as admin</span>
+        </a>
+      </div>
+    </nav>
 
-  <div class="jumbotron jumbotron-fluid" style="padding-top: 75px; padding-bottom: 75px;">
-    <div class="container text-center">
-      <h1 class="display-4">Jadwal Piket Penghuni Asrama</h1>
-      <p class="lead"><%= tanggalPiket %></p>
+    <div
+      class="jumbotron jumbotron-fluid"
+      style="padding-top: 75px; padding-bottom: 75px"
+    >
+      <div class="container text-center">
+        <h1 class="display-4">Jadwal Piket Penghuni Asrama</h1>
+        <p class="lead"><%= tanggalPiket %></p>
+      </div>
     </div>
-  </div>
 
-  <!-- daftar piket untuk anggota -->
-  <div class="container" style="padding-top: 50px">
-    <div class="row">
-      <div class="col-md-12">
-        <input type="text" id="searchInput" class="form-control" placeholder="Cari nama penghuni...">
-        <div class="row mt-3" id="cardsContainer">
-          <% piketData.forEach(piket => { %>
+    <!-- daftar piket untuk anggota -->
+    <div class="container" style="padding-top: 50px">
+      <div class="row">
+        <div class="col-md-12">
+          <input
+            type="text"
+            id="searchInput"
+            class="form-control"
+            placeholder="Cari nama penghuni..."
+          />
+          <div class="row mt-5" id="cardsContainer">
+            <% piketData.forEach(piket => { %>
             <div class="col-md-12 mb-3">
               <div class="card">
                 <div class="card-body">
                   <h5 class="card-title"><%= piket.nama %></h5>
-                  <p class="card-text">Tempat Piket: <%= piket.tempat %></p>
+                  <p class="card-text">Tempat Piket:  <%= piket.tempat %></p>
+                  <p class="card-text">Status Piket:  <%= piket.tempat %></p>
                 </div>
               </div>
             </div>
-          <% }) %>
+            <% }) %>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Footer -->
-  <footer class="footer mt-5">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6 text-center">
-          <h5>Contact Us</h5>
-          <p>Email: -</p>
-          <p>Phone: -</p>
+    <!-- Footer -->
+    <footer class="footer mt-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 text-center">
+            <h5>Contact Us</h5>
+            <p>Email: -</p>
+            <p>Phone: -</p>
+          </div>
+          <div class="col-md-6 text-center">
+            <h5>Follow Us</h5>
+            <ul class="list-unstyled">
+              <li>
+                <a href="https://www.facebook.com/asramabaliviyata/"
+                  >Facebook</a
+                >
+              </li>
+              <li>
+                <a href="https://www.instagram.com/asramabaliviyata/"
+                  >Instagram</a
+                >
+              </li>
+            </ul>
+          </div>
         </div>
-        <div class="col-md-6 text-center">
-          <h5>Follow Us</h5>
-          <ul class="list-unstyled">
-            <li><a href="https://www.facebook.com/asramabaliviyata/">Facebook</a></li>
-            <li><a href="https://www.instagram.com/asramabaliviyata/">Instagram</a></li>
-          </ul>
+        <div class="text-center mt-3">
+          <p>&copy; 2024 Asrama Viyata Tirtagangga. All rights reserved.</p>
         </div>
       </div>
-      <div class="text-center mt-3">
-        <p>&copy; 2024 Asrama Viyata Tirtagangga. All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
+    </footer>
 
-  <!-- Scripts -->
-  <script src="/js/jquery.min.js"></script>
-  <script src="/js/popper.min.js"></script>
-  <script src="/js/bootstrap.bundle.min.js"></script>
-  <script src="/js/home.js"></script>
-</body>
+    <!-- Scripts -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/home.js"></script>
+  </body>
 </html>
