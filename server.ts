@@ -18,7 +18,13 @@ app.use(helmet()); // Set security headers
 app.use(cors()); // Enable CORS
 
 // Serve static files
+// Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')));
+app.use('/js', express.static(path.join(__dirname, 'node_modules/jquery/dist')));
+app.use('/js', express.static(path.join(__dirname, 'node_modules/@popperjs/core/dist/umd')));
+app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')));
+
 
 // Routes setup
 app.get('/', (req: Request, res: Response) => {
