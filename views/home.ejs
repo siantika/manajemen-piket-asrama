@@ -21,44 +21,29 @@
     </div>
   </nav>
 
-  <div class="jumbotron jumbotron-fluid " style="padding-top: 75px; padding-bottom: 75px;">
+  <div class="jumbotron jumbotron-fluid" style="padding-top: 75px; padding-bottom: 75px;">
     <div class="container text-center">
       <h1 class="display-4">Jadwal Piket Penghuni Asrama</h1>
-      <p class="lead" id="tanggalPiket">Minggu, 17 Juli 2024</p>
+      <p class="lead"><%= tanggalPiket %></p>
     </div>
   </div>
 
   <!-- daftar piket untuk anggota -->
-  <div class="container" id="daftarPiket" style="padding-top: 50px">
+  <div class="container" style="padding-top: 50px">
     <div class="row">
       <div class="col-md-12">
         <input type="text" id="searchInput" class="form-control" placeholder="Cari nama penghuni...">
         <div class="row mt-3" id="cardsContainer">
-          <div class="col-md-12">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Sian</h5>
-                <p class="card-text">Tugas Piket: Shift Pagi</p>
+          <% piketData.forEach(piket => { %>
+            <div class="col-md-12 mb-3">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title"><%= piket.nama %></h5>
+                  <p class="card-text">Tempat Piket: <%= piket.tempat %></p>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-12">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Arbi</h5>
-                <p class="card-text">Tugas Piket: Shift Siang</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-12">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Yoga</h5>
-                <p class="card-text">Tugas Piket: Shift Malam</p>
-              </div>
-            </div>
-          </div>
-          <!-- Add more cards as needed -->
+          <% }) %>
         </div>
       </div>
     </div>
@@ -87,9 +72,10 @@
     </div>
   </footer>
 
+  <!-- Scripts -->
   <script src="/js/jquery.min.js"></script>
   <script src="/js/popper.min.js"></script>
   <script src="/js/bootstrap.bundle.min.js"></script>
-  <script src="/js/home.js">  </script>
+  <script src="/js/home.js"></script>
 </body>
 </html>

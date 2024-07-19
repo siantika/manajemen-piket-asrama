@@ -50,6 +50,12 @@
     font-size: 1rem;
     margin: 0;
   }
+
+  .card-title {
+    margin-top: 10px;
+    margin-bottom: 0.5rem; /* Atur sesuai kebutuhan */
+  }
+
   .card:nth-child(odd) .card-body {
     background-color: #e3f2fd;
   }
