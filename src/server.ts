@@ -3,8 +3,8 @@ import path from "path";
 import dotenv from "dotenv";
 import helmet from "helmet";
 import cors from "cors";
-import { logger } from "./src/utils/logger";
-import { LihatDaftarPiket } from "./src/apps/lihatDaftarPiket/types";
+import { logger } from "./utils/logger";
+import { LihatDaftarPiket } from "./apps/lihatDaftarPiket/types";
 
 // Load environment variables from .env file
 dotenv.config();
@@ -19,11 +19,11 @@ app.use(helmet()); // Set security headers
 app.use(cors());
 
 // Serve static files
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "../public")));
 
 // Set view engine to EJS
 app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
+app.set("views", path.join(__dirname, "../views"));
 
 // Sample data
 const piketData = [
