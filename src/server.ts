@@ -53,6 +53,8 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   logger.error(err.stack);
 });
 
+
+
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
