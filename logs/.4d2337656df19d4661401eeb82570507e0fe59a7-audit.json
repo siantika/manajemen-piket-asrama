@@ -19,6 +19,11 @@
             "date": 1721526595344,
             "name": "logs/application-2024-07-21.log",
             "hash": "187dd57c4e1783da614e258c5e1073ff832db9c821041ff97f4a02ca38c09b1d"
+        },
+        {
+            "date": 1721745708713,
+            "name": "logs/application-2024-07-23.log",
+            "hash": "cb0f4ddaffaa76186e38290ab310e54fa28ca2220e4aad9e42b21b679451cf24"
         }
     ],
     "hashType": "sha256"
