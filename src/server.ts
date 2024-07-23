@@ -4,7 +4,8 @@ import dotenv from "dotenv";
 import helmet from "helmet";
 import cors from "cors";
 import { logger } from "./utils/logger";
-import { LihatDaftarPiket } from "./apps/lihatDaftarPiket/types";
+import { LihatDaftarPiket } from "./apps/lihat_daftar_piket/types";
+import manajemenPiketRoutes from "./apps/manajemen_piket/manajemenPiketRoutes";
 
 // Load environment variables from .env file
 dotenv.config();
@@ -20,6 +21,10 @@ app.use(cors());
 
 // Serve static files
 app.use(express.static(path.join(__dirname, "../public")));
+
+// register routes
+app.use('/api', manajemenPiketRoutes)
+
 
 // Set view engine to EJS
 app.set("view engine", "ejs");
