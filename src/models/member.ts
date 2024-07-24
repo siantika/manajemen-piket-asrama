@@ -5,8 +5,8 @@ import sequelize from '../config/database';
 export interface IMember {
   memberId: string;
   memberName: string;
-  createdat?: Date; // Add createdat and updatedat to the interface
-  updatedat?: Date;
+  created_at?: Date; 
+  updated_at?: Date;
 }
 
 // Atribut yang dapat digunakan saat pembuatan model (kecuali primaryKey)
@@ -16,8 +16,8 @@ interface MemberCreationAttributes extends Optional<IMember, 'memberId'> {}
 class Member extends Model<IMember, MemberCreationAttributes> implements IMember {
   public memberId!: string;
   public memberName!: string;
-  public readonly createdat?: Date; // Ensure these are included
-  public readonly updatedat?: Date;
+  public readonly created_at?: Date; 
+  public readonly updated_at?: Date;
 }
 
 // Inisialisasi model dengan konfigurasi
@@ -25,23 +25,23 @@ Member.init(
   {
     memberId: {
       type: DataTypes.UUID,
-      field: 'idasrama',
+      field: 'id',
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
     memberName: {
       type: DataTypes.STRING,
-      field: 'namapenghuni',
+      field: 'name',
       allowNull: false,
     },
-    createdat: {
+    created_at: {
       type: DataTypes.DATE,
-      field: 'createdat',
+      field: 'created_at',
       allowNull: false,
     },
-    updatedat: {
+    updated_at: {
       type: DataTypes.DATE,
-      field: 'updatedat',
+      field: 'updated_at',
       allowNull: false,
     },
   },
@@ -49,9 +49,9 @@ Member.init(
     sequelize,
     modelName: 'Member',
     tableName: 'penghuni',
-    timestamps: true, // This is necessary to enable automatic timestamp management
-    createdAt: 'createdat', // Map Sequelize's createdAt to your DB's createdat
-    updatedAt: 'updatedat', // Map Sequelize's updatedAt to your DB's updatedat
+    timestamps: true, 
+    createdAt: 'created_at', // Map Sequelize's createdAt to DB's createdat
+    updatedAt: 'updated_at', 
   }
 );
 
