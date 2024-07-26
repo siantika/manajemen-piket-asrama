@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
 import jwt from "jsonwebtoken";
+import CONST from "../config/consts";
 
 export const auth = (req: Request, res: Response, next: NextFunction) => {
   const headerAuth = req.headers["authorization"];
@@ -27,7 +28,7 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
 
       const role = (decodedToken as any).role;
 
-      if (role !== "admin") {
+      if (role !== CONST.ROLE.ADMIN) {
         return res.status(StatusCodes.FORBIDDEN).json({
           message: "Forbidden Request",
         });
