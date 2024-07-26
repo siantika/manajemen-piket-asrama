@@ -4,7 +4,7 @@ import {
   updateMemberHandler,
   deleteMemberHandler,
   readAllMemberHandler,
-} from "./manajemen-piket.handler";
+} from "./handlers";
 import { auth } from "../../middlewares/auth";
 
 const router = Router();

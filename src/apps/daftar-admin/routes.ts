@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { registerAdmin } from "./daftar-admin-handler";
+import { registerAdmin } from "./handlers";
 
 const router = Router();
 
