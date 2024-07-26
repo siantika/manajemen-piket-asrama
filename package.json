@@ -1,8 +1,8 @@
 {
-  "name": "nama-proyek-anda",
+  "name": "Web app: manajemen piket asrama",
   "version": "1.0.0",
-  "description": "Deskripsi proyek Anda",
-  "main": "index.js",
+  "description": "Manajemen piket asrama Otten",
+  "main": "dist/server.js",
   "scripts": {
     "start": "nodemon --exec ts-node-dev src/server.ts",
     "build": "tsc",

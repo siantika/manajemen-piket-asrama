@@ -47,7 +47,7 @@ jobs:
           path: ./temp-build
 
       - name: Clear target directory on server
-        uses: appleboy/ssh-action@v0.1.4
+        uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
@@ -68,8 +68,20 @@ jobs:
           source: "temp-build/"
           target: "/home/vimaname/manajemen-piket/"
 
+      - name: Install dependencies
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASS }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            source /home/vimaname/nodevenv/manajemen-piket/18/bin/activate
+            cd /home/vimaname/manajemen-piket
+            npm install
+            
       - name: Restart node js on server
-        uses: appleboy/ssh-action@v0.1.4
+        uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
