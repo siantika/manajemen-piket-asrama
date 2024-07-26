@@ -28,7 +28,12 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: build
-          path: .
+          path: |
+            dist
+            package.json
+            package-lock.json
+            views
+            public
 
   deploy:
     runs-on: ubuntu-latest
@@ -44,27 +49,37 @@ jobs:
       - name: Install sshpass
         run: sudo apt-get install -y sshpass
 
-      - name: Deploy to Domainesia server using SSH
-        env:
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_PORT: ${{ secrets.SSH_PORT }}
-          SSH_PASS: ${{ secrets.SSH_PASS }}
-        run: |
-          # Hapus semua file di direktori target
-          sshpass -p "${{ secrets.SSH_PASS }}" ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+      - name: Clear target directory on server
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASS }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
             source /home/vimaname/nodevenv/manajemen-piket/18/bin/activate
             cd /home/vimaname/manajemen-piket
             rm -rf *
-          EOF
 
-          # Upload file build ke direktori target
-          sshpass -p "${{ secrets.SSH_PASS }}" rsync -avz -e "ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }}" ./temp-build/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/vimaname/manajemen-piket/
+      - name: Upload build artifacts to server
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASS }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "temp-build/"
+          target: "/home/vimaname/manajemen-piket/"
 
-          # Jalankan perintah setelah file di-upload
-          sshpass -p "${{ secrets.SSH_PASS }}" ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+      - name: Restart node js on server
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASS }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
             source /home/vimaname/nodevenv/manajemen-piket/18/bin/activate
             cd /home/vimaname/manajemen-piket
             mkdir -p tmp
             touch tmp/restart.txt
-          EOF
