@@ -4,9 +4,9 @@ import {
   updateMember,
   deleteMember,
   readAllMembers,
-} from "../manajemen_piket/manajemen-piket";
+} from "./manajemen-piket";
 import { StatusCodes } from "http-status-codes";
-import { logger } from "../../utils/logger";
+import { logger } from "../../../utils/logger";
 
 export const addMemberHandler = async (req: Request, res: Response) => {
   const { memberName } = req.body;

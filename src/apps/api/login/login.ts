@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
-import Admin from "../../models/admin";
+import Admin from "../../../models/admin";
 import { StatusCodes } from "http-status-codes";
-import { logger } from "../../utils/logger";
+import { logger } from "../../../utils/logger";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 

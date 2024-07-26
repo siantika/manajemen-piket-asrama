@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import Joi from "joi";
-import { logger } from "../../utils/logger";
+import { logger } from "../../../utils/logger";
 import { StatusCodes } from "http-status-codes";
 import { loginAdmin } from "./login";
 
