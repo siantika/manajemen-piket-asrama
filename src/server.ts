@@ -5,7 +5,7 @@ import helmet from "helmet";
 import cors from "cors";
 import { logger } from "./utils/logger";
 import { LihatDaftarPiket } from "./apps/lihat_daftar_piket/types";
-import manajemenPiketRoutes from "./apps/manajemen_piket/manajemenPiketRoutes";
+import manajemenPiketRoutes from "./apps/manajemen_piket/routes";
 import daftarAdminRoute from "./apps/daftar_admin/daftar-admin-route";
 import loginRoute from "./apps/login/login-route";
 
