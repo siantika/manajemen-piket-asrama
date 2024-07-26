@@ -7,6 +7,7 @@ export interface IAdmin {
   password: string;
   created_at?: Date;
   updated_at?: Date;
+  role: string;
 }
 
 // Atribut yang dapat digunakan saat pembuatan model (kecuali primaryKey)
@@ -18,6 +19,7 @@ class Admin extends Model<IAdmin, AdminCreationAttributes> implements IAdmin {
   public password!: string;
   public readonly created_at?: Date;
   public readonly updated_at?: Date;
+  public role!: string;
 }
 
 Admin.init(
@@ -48,6 +50,11 @@ Admin.init(
       field: "updated_at",
       allowNull: false,
       defaultValue: DataTypes.NOW,
+    },
+    role: {
+      type: DataTypes.STRING,
+      field: "role",
+      allowNull: false,
     },
   },
   {
