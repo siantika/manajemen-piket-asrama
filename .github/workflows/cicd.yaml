@@ -46,9 +46,6 @@ jobs:
           name: build
           path: ./temp-build
 
-      - name: Install sshpass
-        run: sudo apt-get install -y sshpass
-
       - name: Clear target directory on server
         uses: appleboy/ssh-action@v0.1.4
         with:
@@ -62,7 +59,7 @@ jobs:
             rm -rf *
 
       - name: Upload build artifacts to server
-        uses: appleboy/scp-action@v0.1.4
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
