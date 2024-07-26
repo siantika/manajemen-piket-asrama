@@ -10,6 +10,7 @@ export const addAdmin = async (userName: string, plainPassword: string) => {
     await Admin.create({
       adminUserName: userName,
       password: hashedPassword,
+      role: "admin",
     });
     logger.info(`admin with name ${userName} is created!`);
   } catch (error) {
