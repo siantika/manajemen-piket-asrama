@@ -58,9 +58,6 @@ jobs:
             cd /home/vimaname/manajemen-piket
             rm -rf *
 
-            - name: Install rsync
-            run: sudo apt-get install -y rsync
-
       - name: Sync build artifacts to server / copy to server's folder
         run: |
           rsync -avz --delete temp-build/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/vimaname/manajemen-piket/
