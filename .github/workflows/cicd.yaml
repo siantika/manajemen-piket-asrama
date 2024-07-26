@@ -58,9 +58,12 @@ jobs:
             cd /home/vimaname/manajemen-piket
             rm -rf *
 
+      - name: Install sshpass
+        run: sudo apt-get install -y sshpass
+
       - name: Sync build artifacts to server / copy to server's folder
         run: |
-          rsync -avz --delete temp-build/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/vimaname/manajemen-piket/
+          sshpass -p "${{ secrets.SSH_PASS }}" rsync -avz -e "ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }}" ./temp-build/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/vimaname/manajemen-piket/
 
       - name: Install dependencies
         uses: appleboy/ssh-action@v0.1.7
