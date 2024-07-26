@@ -1,7 +1,7 @@
 {
-  "name": "nama-proyek-anda",
+  "name": "Manajemen_Piket_Asrama",
   "version": "1.0.0",
-  "description": "Deskripsi proyek Anda",
+  "description": "manajemen piket mingguna asrama otten",
   "main": "index.js",
   "scripts": {
     "start": "nodemon --exec ts-node-dev src/server.ts",

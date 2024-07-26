@@ -22,11 +22,10 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, "../public")));
 
 // register routes
-const api_ver = process.env.API_VER || 'v1';
-app.use(api_ver, manajemenPiketRoutes)
-app.use(api_ver, daftarAdminRoute)
+const api_ver = process.env.API_VER || "v1";
+app.use(api_ver, manajemenPiketRoutes);
+app.use(api_ver, daftarAdminRoute);
 app.use(api_ver, loginRoute);
-
 
 // Set view engine to EJS
 app.set("view engine", "ejs");
@@ -59,8 +58,6 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   res.status(500).send("Something broke!");
   logger.error(err.stack);
 });
-
-
 
 // Start the server
 const PORT = process.env.PORT || 3000;
