@@ -16,7 +16,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '18'
+          node-version: "18"
 
       - name: Install dependencies
         run: npm install
@@ -58,27 +58,24 @@ jobs:
             cd /home/vimaname/manajemen-piket
             rm -rf *
 
-      - name: Upload build artifacts to server
-        uses: appleboy/scp-action@v0.1.7
+            - name: Install rsync
+            run: sudo apt-get install -y rsync
+
+      - name: Sync build artifacts to server / copy to server's folder
+        run: |
+          rsync -avz --delete temp-build/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/vimaname/manajemen-piket/
+
+      - name: Install dependencies
+        uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PASS }}
           port: ${{ secrets.SSH_PORT }}
-          source: "temp-build/*"
-          target: "/home/vimaname/manajemen-piket/"
-
-      # - name: Install dependencies
-      #   uses: appleboy/ssh-action@v0.1.7
-      #   with:
-      #     host: ${{ secrets.SSH_HOST }}
-      #     username: ${{ secrets.SSH_USER }}
-      #     password: ${{ secrets.SSH_PASS }}
-      #     port: ${{ secrets.SSH_PORT }}
-      #     script: |
-      #       source /home/vimaname/nodevenv/manajemen-piket/18/bin/activate
-      #       cd /home/vimaname/manajemen-piket
-      #       npm install
+          script: |
+            source /home/vimaname/nodevenv/manajemen-piket/18/bin/activate
+            cd /home/vimaname/manajemen-piket
+            npm install
 
       - name: Restart node js on server
         uses: appleboy/ssh-action@v0.1.7
