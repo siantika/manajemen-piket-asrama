@@ -1,5 +1,5 @@
-import Member from "../../models/member";
-import { logger } from "../../utils/logger";
+import Member from "../../../models/member";
+import { logger } from "../../../utils/logger";
 
 export const addMember = async (name: string) => {
   try {

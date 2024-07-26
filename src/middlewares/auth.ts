@@ -1,13 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
-import { string } from "joi";
 import jwt from "jsonwebtoken";
-import { logger } from "../utils/logger";
 
 export const auth = (req: Request, res: Response, next: NextFunction) => {
   const headerAuth = req.headers["authorization"];
-
-  console.log(`auth header: ${headerAuth}`);
 
   if (!headerAuth) {
     return res.status(StatusCodes.UNAUTHORIZED).send("Unauthorized");
@@ -20,8 +16,6 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
   }
 
   const bearerToken = tokenParts[1];
-
-  console.log(`auth bearer: ${bearerToken}`);
 
   jwt.verify(
     bearerToken,

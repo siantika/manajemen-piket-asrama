@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
-import Admin from "../../models/admin";
-import { logger } from "../../utils/logger";
+import Admin from "../../../models/admin";
+import { logger } from "../../../utils/logger";
 
 const saltRounds = 10;
 

@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { addAdmin } from "./daftar-admin";
 import Joi from "joi";
 import { StatusCodes } from "http-status-codes";
-import { logger } from "../../utils/logger";
+import { logger } from "../../../utils/logger";
 
 // Validasi skema
 const adminSchema = Joi.object({

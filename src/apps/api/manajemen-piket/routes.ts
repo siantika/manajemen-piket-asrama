@@ -5,7 +5,7 @@ import {
   deleteMemberHandler,
   readAllMemberHandler,
 } from "./handlers";
-import { auth } from "../../middlewares/auth";
+import { auth } from "../../../middlewares/auth";
 
 const router = Router();
 
