@@ -6,12 +6,10 @@ import cors from "cors";
 import { logger } from "./utils/logger";
 import { LihatDaftarPiket } from "./apps/lihat_daftar_piket/types";
 import manajemenPiketRoutes from "./apps/manajemen_piket/manajemenPiketRoutes";
-import daftarAdmin  from "./apps/daftar_admin/daftar-admin-route";
+import daftarAdminRoute from "./apps/daftar_admin/daftar-admin-route";
+import loginRoute from "./apps/login/login-route";
 
-// Load environment variables from .env file
 dotenv.config();
-
-// Create Express application
 const app = express();
 
 // Middleware setup
@@ -24,9 +22,10 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, "../public")));
 
 // register routes
-app.use('/api', manajemenPiketRoutes)
-app.use('/api', daftarAdmin)
-
+const api_ver = process.env.API_VER || "v1";
+app.use(api_ver, manajemenPiketRoutes);
+app.use(api_ver, daftarAdminRoute);
+app.use(api_ver, loginRoute);
 
 // Set view engine to EJS
 app.set("view engine", "ejs");
