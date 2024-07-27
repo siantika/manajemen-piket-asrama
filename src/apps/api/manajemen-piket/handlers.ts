@@ -4,7 +4,7 @@ import {
   updateMember,
   deleteMember,
   readAllMembers,
-} from "./manajemen-piket";
+} from "./member";
 import { StatusCodes } from "http-status-codes";
 import { logger } from "../../../utils/logger";
 
