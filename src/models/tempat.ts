@@ -3,7 +3,7 @@ import sequelize from "../config/database";
 
 export interface ITempat {
   tempatId: string;
-  placeName: string;
+  namaTempat: string;
 }
 
 interface PlaceCreationAttributes extends Optional<ITempat, "tempatId"> {}
@@ -13,7 +13,7 @@ class Tempat
   implements ITempat
 {
   public tempatId!: string;
-  public placeName!: string;
+  public namaTempat!: string;
 }
 
 Tempat.init(
@@ -24,7 +24,7 @@ Tempat.init(
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    placeName: {
+    namaTempat: {
       type: DataTypes.STRING,
       field: "namatempat",
       allowNull: false,
