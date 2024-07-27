@@ -4,7 +4,9 @@ const CONST = {
   ROLE: {
     ADMIN: "admin",
   },
-
+  STATUS_TEMPAT: {
+    RESERVED: "reserved",
+  },
 };
 
 export default CONST;
