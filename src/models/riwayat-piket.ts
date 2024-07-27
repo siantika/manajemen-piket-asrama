@@ -5,7 +5,7 @@ export interface IRiwayatPiket {
   piketId: string;
   tempatId: string;
   penghuniId: string;
-  kehadiran: "Hadir" | "Tidak Hadir";
+  statusPiket: "sudah" | "belum";
   tanggalpiket: Date;
 }
 
@@ -18,7 +18,7 @@ class RiwayatPiket
   public piketId!: string;
   public tempatId!: string;
   public penghuniId!: string;
-  public kehadiran!: "Hadir" | "Tidak Hadir";
+  public statusPiket!: "sudah" | "belum";
   public tanggalpiket!: Date;
 }
 
@@ -40,9 +40,9 @@ RiwayatPiket.init(
       field: "penghuniid",
       allowNull: false,
     },
-    kehadiran: {
-      type: DataTypes.ENUM("Hadir", "Tidak Hadir"),
-      field: "kehadiran",
+    statusPiket: {
+      type: DataTypes.ENUM("sudah", "belum"),
+      field: "status_piket",
       allowNull: false,
     },
     tanggalpiket: {
