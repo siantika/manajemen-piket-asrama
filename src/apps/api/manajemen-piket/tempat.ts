@@ -1,10 +1,11 @@
 import Tempat from "../../../models/tempat";
 import { logger } from "../../../utils/logger";
 
-export const addPlace = async (name: string) => {
+export const addPlace = async (name: string, statusTempat:string) => {
   try {
     const newMember = await Tempat.create({
       namaTempat: name,
+      statusTempat
     });
     return newMember;
   } catch (error) {
@@ -23,7 +24,8 @@ export const readAllPlaces = async () => {
   }
 };
 
-export const updatePlace = async (id: string, name: string) => {
+export const updatePlace = async (id: string, name: string, statusTempat: string) => {
+  // cek 'status tempat' di database tempat
   try {
     const tempat = await Tempat.findByPk(id);
     if (!tempat) {
@@ -31,6 +33,7 @@ export const updatePlace = async (id: string, name: string) => {
     }
 
     tempat.namaTempat = name;
+    tempat.statusTempat = statusTempat;
     await tempat.save();
     return tempat;
   } catch (error) {

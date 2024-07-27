@@ -76,10 +76,10 @@ export const deleteMemberHandler = async (req: Request, res: Response) => {
 
 // tempat
 export const addPlaceHandler = async (req: Request, res: Response) => {
-  const { placeName } = req.body;
+  const { placeName, placeStatus } = req.body;
 
   try {
-    const newPlace = await addPlace(placeName);
+    const newPlace = await addPlace(placeName, placeStatus);
     res.status(StatusCodes.CREATED).json({
       message: "Place added successfully",
       data: newPlace,
@@ -92,7 +92,7 @@ export const addPlaceHandler = async (req: Request, res: Response) => {
   }
 };
 
-export const readAllPlacesHandler = async (req:Request, res: Response) => {
+export const readAllPlacesHandler = async (req: Request, res: Response) => {
   try {
     const places = await readAllPlaces();
     res.status(StatusCodes.OK).json({
@@ -107,10 +107,10 @@ export const readAllPlacesHandler = async (req:Request, res: Response) => {
 };
 
 export const updatePlaceHandler = async (req: Request, res: Response) => {
-  const { placeId, placeName } = req.body;
+  const { placeId, placeName, placeStatus } = req.body;
 
   try {
-    const updatedPlace = await updatePlace(placeId, placeName);
+    const updatedPlace = await updatePlace(placeId, placeName, placeStatus);
     res.status(StatusCodes.OK).json({
       message: "Place updated successfully",
       data: updatedPlace,
