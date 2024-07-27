@@ -34,7 +34,7 @@ Tempat.init(
     sequelize,
     modelName: "Tempat",
     tableName: "tempat",
-    timestamps: true,
+    timestamps: false,
   }
 );
 
