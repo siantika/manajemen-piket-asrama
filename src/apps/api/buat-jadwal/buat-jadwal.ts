@@ -3,6 +3,7 @@ import Member from "../../../models/member";
 import RiwayatPiket, { IRiwayatPiket } from "../../../models/riwayat-piket";
 import Tempat from "../../../models/tempat";
 import { logger } from "../../../utils/logger";
+import CONST from "../../../config/consts";
 
 const getMembers = async (): Promise<Member[]> => {
   try {
@@ -38,7 +39,9 @@ export const generateSchedule = async () => {
     const riwayat = await getRiwayatPiket();
 
     // Ambil nama tempat cadangan dari array tempat
-    const defaultPlaceObject = tempat.find((t) => t.namaTempat === "Tamu");
+    const defaultPlaceObject = tempat.find(
+      (t) => t.statusTempat === CONST.STATUS_TEMPAT.RESERVED
+    );
     const defaultPlace = defaultPlaceObject
       ? defaultPlaceObject.namaTempat
       : "Tanya Admin";
@@ -84,6 +87,9 @@ export const generateSchedule = async () => {
       if (!assigned) {
         schedule.push({ member: member.memberName, place: defaultPlace });
       }
+
+      // tambah status piket awal yaitu : 'belum'
+      schedule.push({statusPiket: CONST.STATUS_PIKET.BELUM})
     }
     console.log("Generated Schedule:", schedule);
 
