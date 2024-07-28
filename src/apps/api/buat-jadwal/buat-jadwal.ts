@@ -1,9 +1,28 @@
-import { any } from "joi";
+import { any, string } from "joi";
 import Member from "../../../models/member";
 import RiwayatPiket, { IRiwayatPiket } from "../../../models/riwayat-piket";
 import Tempat from "../../../models/tempat";
 import { logger } from "../../../utils/logger";
 import CONST from "../../../config/consts";
+import { Interface } from "readline";
+import { DATE } from "sequelize";
+
+// Interface
+interface ISchedule {
+  tempatId: string;
+  penghuniId: string;
+  statusPiket: "belum" | "sudah";
+  tanggalPiket: Date;
+}
+
+interface IGeneratedSchedule {
+  memberId: string;
+  member: string;
+  placeId: string;
+  place: string;
+  statusPiket: string;
+  tanggalPiket: Date;
+}
 
 const getMembers = async (): Promise<Member[]> => {
   try {
@@ -32,67 +51,76 @@ const getRiwayatPiket = async (): Promise<IRiwayatPiket[]> => {
   }
 };
 
-export const generateSchedule = async () => {
+export const generateSchedule = async (): Promise<IGeneratedSchedule[]> => {
   try {
     const members = await getMembers();
     const tempat = await getTempat();
     const riwayat = await getRiwayatPiket();
 
-    // Ambil nama tempat cadangan dari array tempat
     const defaultPlaceObject = tempat.find(
       (t) => t.statusTempat === CONST.STATUS_TEMPAT.RESERVED
     );
     const defaultPlace = defaultPlaceObject
       ? defaultPlaceObject.namaTempat
       : "Tanya Admin";
+    const defaultPlaceId = defaultPlaceObject
+      ? defaultPlaceObject.tempatId
+      : "Undefined";
 
-    const riwayatMap = ({} = riwayat.reduce((map: any, entry: any) => {
+    // Map to store the history of places assigned to each member
+    const riwayatMap = riwayat.reduce((map, entry) => {
       if (!map[entry.penghuniId]) {
         map[entry.penghuniId] = new Set();
       }
       map[entry.penghuniId].add(entry.tempatId);
       return map;
-    }, {} as { [key: number]: Set<number> }));
+    }, {} as { [key: string]: Set<string> });
 
-    // DEBUG
-    console.log("Ini riwayat map: ", riwayatMap);
-    // Tampilkan hasil di console
-    console.log("Riwayat Map:");
-    Object.keys(riwayatMap).forEach((penghuniId) => {
-      const tempatIds = Array.from(riwayatMap[+penghuniId]);
-      console.log(
-        `Penghuni ID: ${penghuniId}, Tempat IDs: ${tempatIds.join(", ")}`
-      );
-    });
+    const schedule: IGeneratedSchedule[] = [];
+    const usedPlacesToday = new Set<string>(); // To track places used today
 
-    const schedule = [];
-
-    const usedPlaces = new Set<string>(); // Menyimpan tempat yang sudah digunakan
-
-    // Loop untuk setiap anggota
-    for (const member of members) {
-      let assigned = false; // Flag untuk menandai apakah anggota sudah mendapatkan tempat
-
+    // Function to get a place for a member avoiding previously assigned places
+    const getAvailablePlace = (memberId: string) => {
       for (const place of tempat) {
-        if (!usedPlaces.has(place.tempatId)) {
-          // Tambahkan tempat ke jadwal untuk anggota
-          schedule.push({ member: member.memberName, place: place.namaTempat });
-          usedPlaces.add(place.tempatId); // Tandai tempat sebagai telah digunakan
-          assigned = true; // Tandai bahwa anggota telah mendapatkan tempat
-          break; // Pindah ke anggota berikutnya setelah menetapkan tempat
+        if (
+          !usedPlacesToday.has(place.tempatId) &&
+          (!riwayatMap[memberId] || !riwayatMap[memberId].has(place.tempatId))
+        ) {
+          usedPlacesToday.add(place.tempatId);
+          return place;
         }
       }
+      return null;
+    };
 
-      // Jika tempat habis, tetapkan tempat "Taman" untuk anggota yang tersisa
-      if (!assigned) {
-        schedule.push({ member: member.memberName, place: defaultPlace });
+    // Loop through each member
+    for (const member of members) {
+      const availablePlace = getAvailablePlace(member.memberId);
+
+      if (availablePlace) {
+        schedule.push({
+          memberId: member.memberId,
+          member: member.memberName,
+          placeId: availablePlace.tempatId,
+          place: availablePlace.namaTempat,
+          statusPiket: CONST.STATUS_PIKET.BELUM,
+          tanggalPiket: new Date(),
+        });
+      } else {
+        // Assign default place if no available place found
+        schedule.push({
+          memberId: member.memberId,
+          member: member.memberName,
+          placeId: defaultPlaceId,
+          place: defaultPlace,
+          statusPiket: CONST.STATUS_PIKET.BELUM,
+          tanggalPiket: new Date(),
+        });
       }
-
-      // tambah status piket awal yaitu : 'belum'
-      schedule.push({statusPiket: CONST.STATUS_PIKET.BELUM})
     }
-    console.log("Generated Schedule:", schedule);
 
+    // DEBUG
+    console.log("Generated Schedule:", schedule);
     return schedule;
   } catch (error) {
     logger.error("Error generating schedule:", error);
@@ -100,10 +128,35 @@ export const generateSchedule = async () => {
   }
 };
 
+export const sendToDatabase = async (data: ISchedule) => {
+  try {
+    await RiwayatPiket.create({
+      tempatId: data.tempatId,
+      penghuniId: data.penghuniId,
+      statusPiket: data.statusPiket,
+      tanggalPiket: data.tanggalPiket,
+    });
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
 // Properly call the generateSchedule function
 (async () => {
   try {
-    await generateSchedule();
+    const generatedScheduleData: IGeneratedSchedule[] =
+      await generateSchedule();
+
+    for (const schedule of generatedScheduleData) {
+      const payload: ISchedule = {
+        tempatId: schedule.placeId,
+        penghuniId: schedule.memberId,
+        statusPiket: schedule.statusPiket as "belum" | "sudah", // Casting to match ISchedule
+        tanggalPiket: schedule.tanggalPiket,
+      };
+      await sendToDatabase(payload);
+    }
   } catch (error) {
     console.error("Error executing generateSchedule:", error);
   }
