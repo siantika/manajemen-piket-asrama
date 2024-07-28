@@ -6,7 +6,7 @@ export interface IRiwayatPiket {
   tempatId: string;
   penghuniId: string;
   statusPiket: "sudah" | "belum";
-  tanggalpiket: Date;
+  tanggalPiket: Date;
 }
 
 interface PlaceCreationAttributes extends Optional<IRiwayatPiket, "piketId"> {}
@@ -19,7 +19,7 @@ class RiwayatPiket
   public tempatId!: string;
   public penghuniId!: string;
   public statusPiket!: "sudah" | "belum";
-  public tanggalpiket!: Date;
+  public tanggalPiket!: Date;
 }
 
 RiwayatPiket.init(
@@ -45,7 +45,7 @@ RiwayatPiket.init(
       field: "status_piket",
       allowNull: false,
     },
-    tanggalpiket: {
+    tanggalPiket: {
       type: DataTypes.DATE,
       field: "tanggalpiket",
       allowNull: false,
