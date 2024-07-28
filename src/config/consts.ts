@@ -7,6 +7,9 @@ const CONST = {
   STATUS_TEMPAT: {
     RESERVED: "reserved",
   },
+  STATUS_PIKET: {
+    BELUM: "belum",
+  }
 };
 
 export default CONST;
