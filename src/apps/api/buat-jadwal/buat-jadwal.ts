@@ -1,97 +1,15 @@
-import Member from "../../../models/member";
-import RiwayatPiket, { IRiwayatPiket } from "../../../models/riwayat-piket";
-import Tempat from "../../../models/tempat";
+import RiwayatPiket from "../../../models/riwayat-piket";
 import { logger } from "../../../utils/logger";
-import CONST from "../../../config/consts";
+import {
+  createRiwayatMap,
+  createScheduleEntry,
+  getAvailablePlace,
+  getDefaultPlace,
+  getMembers,
+  getRiwayatPiket,
+  getTempat,
+} from "./helpers";
 import { IGeneratedSchedule, ISchedule } from "./interfaces";
-
-const getMembers = async (): Promise<Member[]> => {
-  try {
-    return (await Member.findAll()) as Member[];
-  } catch (error) {
-    logger.error("Error fetching members:", error);
-    throw error;
-  }
-};
-
-const getTempat = async (): Promise<Tempat[]> => {
-  try {
-    return (await Tempat.findAll()) as Tempat[];
-  } catch (error) {
-    logger.error("Error fetching tempat:", error);
-    throw error;
-  }
-};
-
-const getRiwayatPiket = async (): Promise<IRiwayatPiket[]> => {
-  try {
-    return (await RiwayatPiket.findAll()) as IRiwayatPiket[];
-  } catch (error) {
-    logger.error("Error fetching riwayat piket:", error);
-    throw error;
-  }
-};
-
-const getDefaultPlace = (
-  tempat: Tempat[]
-): { defaultPlace: string; defaultPlaceId: string } => {
-  const defaultPlaceObject = tempat.find(
-    (t) => t.statusTempat === CONST.STATUS_TEMPAT.RESERVED
-  );
-  return {
-    defaultPlace: defaultPlaceObject
-      ? defaultPlaceObject.namaTempat
-      : "Tanya Admin",
-    defaultPlaceId: defaultPlaceObject
-      ? defaultPlaceObject.tempatId
-      : "Undefined",
-  };
-};
-
-const createRiwayatMap = (
-  riwayat: IRiwayatPiket[]
-): { [key: string]: Set<string> } => {
-  return riwayat.reduce((map, entry) => {
-    if (!map[entry.penghuniId]) {
-      map[entry.penghuniId] = new Set();
-    }
-    map[entry.penghuniId].add(entry.tempatId);
-    return map;
-  }, {} as { [key: string]: Set<string> });
-};
-
-const getAvailablePlace = (
-  memberId: string,
-  tempat: Tempat[],
-  usedPlacesToday: Set<string>,
-  riwayatMap: { [key: string]: Set<string> }
-): Tempat | null => {
-  for (const place of tempat) {
-    if (
-      !usedPlacesToday.has(place.tempatId) &&
-      (!riwayatMap[memberId] || !riwayatMap[memberId].has(place.tempatId))
-    ) {
-      usedPlacesToday.add(place.tempatId);
-      return place;
-    }
-  }
-  return null;
-};
-
-const createScheduleEntry = (
-  member: Member,
-  placeId: string,
-  place: string
-): IGeneratedSchedule => {
-  return {
-    memberId: member.memberId,
-    member: member.memberName,
-    placeId,
-    place,
-    statusPiket: CONST.STATUS_PIKET.BELUM,
-    tanggalPiket: new Date(),
-  };
-};
 
 export const generateSchedule = async (): Promise<IGeneratedSchedule[]> => {
   try {
