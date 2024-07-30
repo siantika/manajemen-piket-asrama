@@ -3,23 +3,7 @@ import RiwayatPiket, { IRiwayatPiket } from "../../../models/riwayat-piket";
 import Tempat from "../../../models/tempat";
 import { logger } from "../../../utils/logger";
 import CONST from "../../../config/consts";
-
-// Interface
-interface ISchedule {
-  tempatId: string;
-  penghuniId: string;
-  statusPiket: "belum" | "sudah";
-  tanggalPiket: Date;
-}
-
-interface IGeneratedSchedule {
-  memberId: string;
-  member: string;
-  placeId: string;
-  place: string;
-  statusPiket: string;
-  tanggalPiket: Date;
-}
+import { IGeneratedSchedule, ISchedule } from "./interfaces";
 
 const getMembers = async (): Promise<Member[]> => {
   try {
