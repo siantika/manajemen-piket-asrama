@@ -48,71 +48,104 @@ const getRiwayatPiket = async (): Promise<IRiwayatPiket[]> => {
   }
 };
 
+const getDefaultPlace = (
+  tempat: Tempat[]
+): { defaultPlace: string; defaultPlaceId: string } => {
+  const defaultPlaceObject = tempat.find(
+    (t) => t.statusTempat === CONST.STATUS_TEMPAT.RESERVED
+  );
+  return {
+    defaultPlace: defaultPlaceObject
+      ? defaultPlaceObject.namaTempat
+      : "Tanya Admin",
+    defaultPlaceId: defaultPlaceObject
+      ? defaultPlaceObject.tempatId
+      : "Undefined",
+  };
+};
+
+const createRiwayatMap = (
+  riwayat: IRiwayatPiket[]
+): { [key: string]: Set<string> } => {
+  return riwayat.reduce((map, entry) => {
+    if (!map[entry.penghuniId]) {
+      map[entry.penghuniId] = new Set();
+    }
+    map[entry.penghuniId].add(entry.tempatId);
+    return map;
+  }, {} as { [key: string]: Set<string> });
+};
+
+const getAvailablePlace = (
+  memberId: string,
+  tempat: Tempat[],
+  usedPlacesToday: Set<string>,
+  riwayatMap: { [key: string]: Set<string> }
+): Tempat | null => {
+  for (const place of tempat) {
+    if (
+      !usedPlacesToday.has(place.tempatId) &&
+      (!riwayatMap[memberId] || !riwayatMap[memberId].has(place.tempatId))
+    ) {
+      usedPlacesToday.add(place.tempatId);
+      return place;
+    }
+  }
+  return null;
+};
+
+const createScheduleEntry = (
+  member: Member,
+  placeId: string,
+  place: string
+): IGeneratedSchedule => {
+  return {
+    memberId: member.memberId,
+    member: member.memberName,
+    placeId,
+    place,
+    statusPiket: CONST.STATUS_PIKET.BELUM,
+    tanggalPiket: new Date(),
+  };
+};
+
 export const generateSchedule = async (): Promise<IGeneratedSchedule[]> => {
   try {
     const members = await getMembers();
     const tempat = await getTempat();
     const riwayat = await getRiwayatPiket();
 
-    const defaultPlaceObject = tempat.find(
-      (t) => t.statusTempat === CONST.STATUS_TEMPAT.RESERVED
-    );
-    const defaultPlace = defaultPlaceObject
-      ? defaultPlaceObject.namaTempat
-      : "Tanya Admin";
-    const defaultPlaceId = defaultPlaceObject
-      ? defaultPlaceObject.tempatId
-      : "Undefined";
+    // Setup default place
+    const { defaultPlace, defaultPlaceId } = getDefaultPlace(tempat);
 
     // Map to store the history of places assigned to each member
-    const riwayatMap = riwayat.reduce((map, entry) => {
-      if (!map[entry.penghuniId]) {
-        map[entry.penghuniId] = new Set();
-      }
-      map[entry.penghuniId].add(entry.tempatId);
-      return map;
-    }, {} as { [key: string]: Set<string> });
+    const riwayatMap = createRiwayatMap(riwayat);
 
     const schedule: IGeneratedSchedule[] = [];
     const usedPlacesToday = new Set<string>(); // To track places used today
 
-    // Function to get a place for a member avoiding previously assigned places
-    const getAvailablePlace = (memberId: string) => {
-      for (const place of tempat) {
-        if (
-          !usedPlacesToday.has(place.tempatId) &&
-          (!riwayatMap[memberId] || !riwayatMap[memberId].has(place.tempatId))
-        ) {
-          usedPlacesToday.add(place.tempatId);
-          return place;
-        }
-      }
-      return null;
-    };
-
-    // Loop through each member
+    // Loop through each member and generate schedule
     for (const member of members) {
-      const availablePlace = getAvailablePlace(member.memberId);
+      const availablePlace = getAvailablePlace(
+        member.memberId,
+        tempat,
+        usedPlacesToday,
+        riwayatMap
+      );
 
       if (availablePlace) {
-        schedule.push({
-          memberId: member.memberId,
-          member: member.memberName,
-          placeId: availablePlace.tempatId,
-          place: availablePlace.namaTempat,
-          statusPiket: CONST.STATUS_PIKET.BELUM,
-          tanggalPiket: new Date(),
-        });
+        schedule.push(
+          createScheduleEntry(
+            member,
+            availablePlace.tempatId,
+            availablePlace.namaTempat
+          )
+        );
       } else {
         // Assign default place if no available place found
-        schedule.push({
-          memberId: member.memberId,
-          member: member.memberName,
-          placeId: defaultPlaceId,
-          place: defaultPlace,
-          statusPiket: CONST.STATUS_PIKET.BELUM,
-          tanggalPiket: new Date(),
-        });
+        schedule.push(
+          createScheduleEntry(member, defaultPlaceId, defaultPlace)
+        );
       }
     }
 
