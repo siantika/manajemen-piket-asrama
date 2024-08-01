@@ -105,8 +105,8 @@ export const saveRecapPicket = () => {};
 export const saveGeneratedSchedule = async (schedules: ISchedule) => {
   try {
     const { error } = scheduleSchema.validate({
-      placeId: schedules.tempatId,
-      memberId: schedules.penghuniId,
+      placeId: schedules.placeId,
+      memberId: schedules.memberId,
       statusPiket: schedules.statusPiket,
       tanggalPiket: schedules.tanggalPiket,
     });
@@ -124,8 +124,8 @@ export const saveGeneratedSchedule = async (schedules: ISchedule) => {
     }
     
     await RiwayatPiket.create({
-      tempatId: schedules.tempatId,
-      penghuniId: schedules.penghuniId,
+      tempatId: schedules.placeId,
+      penghuniId: schedules.memberId,
       statusPiket: statusPiketReceived,
       tanggalPiket: schedules.tanggalPiket,
     });

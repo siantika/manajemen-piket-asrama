@@ -1,6 +1,6 @@
 export interface ISchedule {
-  tempatId: string;
-  penghuniId: string;
+  placeId: string;
+  memberId: string;
   statusPiket: "belum" | "sudah";
   tanggalPiket: Date;
 }
