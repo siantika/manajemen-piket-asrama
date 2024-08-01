@@ -1,4 +1,3 @@
-import RiwayatPiket from "../../../models/riwayat-piket";
 import { logger } from "../../../utils/logger";
 import {
   createRiwayatMap,
@@ -8,6 +7,7 @@ import {
   getMembers,
   getRiwayatPiket,
   getTempat,
+  saveGeneratedSchedule,
 } from "./helpers";
 import { IGeneratedSchedule, ISchedule } from "./interfaces";
 
@@ -17,7 +17,6 @@ export const generateSchedule = async (): Promise<IGeneratedSchedule[]> => {
     const tempat = await getTempat();
     const riwayat = await getRiwayatPiket();
 
-    // Setup default place
     const { defaultPlace, defaultPlaceId } = getDefaultPlace(tempat);
 
     // Map to store the history of places assigned to each member
@@ -60,20 +59,6 @@ export const generateSchedule = async (): Promise<IGeneratedSchedule[]> => {
   }
 };
 
-export const sendToDatabase = async (data: ISchedule) => {
-  try {
-    await RiwayatPiket.create({
-      tempatId: data.tempatId,
-      penghuniId: data.penghuniId,
-      statusPiket: data.statusPiket,
-      tanggalPiket: data.tanggalPiket,
-    });
-  } catch (error) {
-    logger.error(error);
-    throw error;
-  }
-};
-
 // Properly call the generateSchedule function
 (async () => {
   try {
@@ -82,12 +67,12 @@ export const sendToDatabase = async (data: ISchedule) => {
 
     for (const schedule of generatedScheduleData) {
       const payload: ISchedule = {
-        tempatId: schedule.placeId,
-        penghuniId: schedule.memberId,
+        placeId: schedule.placeId,
+        memberId: schedule.memberId,
         statusPiket: schedule.statusPiket as "belum" | "sudah", // Casting to match ISchedule
         tanggalPiket: schedule.tanggalPiket,
       };
-      await sendToDatabase(payload);
+      await saveGeneratedSchedule(payload);
     }
   } catch (error) {
     console.error("Error executing generateSchedule:", error);
