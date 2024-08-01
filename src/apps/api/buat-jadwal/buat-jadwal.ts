@@ -50,8 +50,7 @@ export const generateSchedule = async (): Promise<IGeneratedSchedule[]> => {
       }
     }
 
-    // DEBUG
-    console.log("Generated Schedule:", schedule);
+    logger.info("Generated Schedule:", schedule);
     return schedule;
   } catch (error) {
     logger.error("Error generating schedule:", error);
@@ -75,6 +74,6 @@ export const generateSchedule = async (): Promise<IGeneratedSchedule[]> => {
       await saveGeneratedSchedule(payload);
     }
   } catch (error) {
-    console.error("Error executing generateSchedule:", error);
+    logger.error("Error executing generateSchedule:", error);
   }
 })();
