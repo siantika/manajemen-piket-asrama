@@ -1,4 +1,4 @@
-export interface ISchedule {
+export interface IRekapPiket {
   placeId: string;
   memberId: string;
   statusPiket: "belum" | "sudah";

@@ -8,8 +8,9 @@ import {
   getRiwayatPiket,
   getTempat,
   saveGeneratedSchedule,
+  saveRecapPicket,
 } from "./helpers";
-import { IGeneratedSchedule, ISchedule } from "./interfaces";
+import { IGeneratedSchedule, IRekapPiket } from "./interfaces";
 
 export const generateSchedule = async (): Promise<IGeneratedSchedule[]> => {
   try {
@@ -58,20 +59,29 @@ export const generateSchedule = async (): Promise<IGeneratedSchedule[]> => {
   }
 };
 
-// Properly call the generateSchedule function
+// Properly call the functions
 (async () => {
   try {
     const generatedScheduleData: IGeneratedSchedule[] =
       await generateSchedule();
 
     for (const schedule of generatedScheduleData) {
-      const payload: ISchedule = {
+      const rekapPiket: IRekapPiket = {
         placeId: schedule.placeId,
         memberId: schedule.memberId,
         statusPiket: schedule.statusPiket as "belum" | "sudah", // Casting to match ISchedule
         tanggalPiket: schedule.tanggalPiket,
       };
-      await saveGeneratedSchedule(payload);
+      const piketSekarang: IGeneratedSchedule = {
+        placeId: schedule.placeId,
+        place: schedule.place,
+        memberId: schedule.memberId,
+        member: schedule.member,
+        statusPiket: schedule.statusPiket as "belum" | "sudah", // Casting to match ISchedule
+        tanggalPiket: schedule.tanggalPiket,
+      };
+      await saveRecapPicket(rekapPiket);
+      await saveGeneratedSchedule(piketSekarang);
     }
   } catch (error) {
     logger.error("Error executing generateSchedule:", error);

@@ -3,7 +3,7 @@ import RiwayatPiket, { IRiwayatPiket } from "../../../models/riwayat-piket";
 import Tempat from "../../../models/tempat";
 import { logger } from "../../../utils/logger";
 import CONST from "../../../config/consts";
-import { IGeneratedSchedule, ISchedule } from "./interfaces";
+import { IGeneratedSchedule, IRekapPiket } from "./interfaces";
 import Joi from "joi";
 
 export const getMembers = async (): Promise<Member[]> => {
@@ -100,9 +100,30 @@ export const isOneCyclePicketAchieved = () => {};
 
 export const getBackupPeople = () => {};
 
-export const saveRecapPicket = () => {};
+export const saveGeneratedSchedule = async (
+  generatedSchedule: IGeneratedSchedule
+) => {
+  try {
+    const { error } = generatedScheduleSchema.validate({
+      placeId: generatedSchedule.placeId,
+      place: generatedSchedule.place,
+      memberId: generatedSchedule.memberId,
+      member: generatedSchedule.member,
+      statusPiket: generatedSchedule.statusPiket,
+      tanggalPiket: generatedSchedule.tanggalPiket,
+    });
+    if (error) {
+      logger.error("Validation error:", error.details);
+      throw new Error(
+        `Validation error: ${error.details.map((d) => d.message).join(", ")}`
+      );
+    }
+  } catch (error) {
+    logger.error(error);
+  }
+};
 
-export const saveGeneratedSchedule = async (schedules: ISchedule) => {
+export const saveRecapPicket = async (schedules: IRekapPiket) => {
   try {
     const { error } = scheduleSchema.validate({
       placeId: schedules.placeId,
@@ -122,14 +143,13 @@ export const saveGeneratedSchedule = async (schedules: ISchedule) => {
     if (!(statusPiketReceived === "sudah" || statusPiketReceived === "belum")) {
       throw new Error("Invalid statusPiket value");
     }
-    
+
     await RiwayatPiket.create({
       tempatId: schedules.placeId,
       penghuniId: schedules.memberId,
       statusPiket: statusPiketReceived,
       tanggalPiket: schedules.tanggalPiket,
     });
-    
   } catch (error) {
     logger.error(error);
     throw error;
@@ -139,6 +159,15 @@ export const saveGeneratedSchedule = async (schedules: ISchedule) => {
 const scheduleSchema = Joi.object({
   placeId: Joi.string().required(),
   memberId: Joi.string().required(),
+  statusPiket: Joi.string().valid("sudah", "belum").required(),
+  tanggalPiket: Joi.date().required(),
+});
+
+const generatedScheduleSchema = Joi.object({
+  placeId: Joi.string().required(),
+  place: Joi.string().required(),
+  memberId: Joi.string().required(),
+  member: Joi.string().required(),
   statusPiket: Joi.string().valid("sudah", "belum").required(),
   tanggalPiket: Joi.date().required(),
 });
