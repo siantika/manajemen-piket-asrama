@@ -5,6 +5,7 @@ import { logger } from "../../../utils/logger";
 import CONST from "../../../config/consts";
 import { IGeneratedSchedule, IRekapPiket } from "./interfaces";
 import Joi from "joi";
+import PiketSekarang from "../../../models/piket-sekarang";
 
 export const getMembers = async (): Promise<Member[]> => {
   try {
@@ -101,16 +102,16 @@ export const isOneCyclePicketAchieved = () => {};
 export const getBackupPeople = () => {};
 
 export const saveGeneratedSchedule = async (
-  generatedSchedule: IGeneratedSchedule
+  schedule: IGeneratedSchedule
 ) => {
   try {
     const { error } = generatedScheduleSchema.validate({
-      placeId: generatedSchedule.placeId,
-      place: generatedSchedule.place,
-      memberId: generatedSchedule.memberId,
-      member: generatedSchedule.member,
-      statusPiket: generatedSchedule.statusPiket,
-      tanggalPiket: generatedSchedule.tanggalPiket,
+      placeId: schedule.placeId,
+      place: schedule.place,
+      memberId: schedule.memberId,
+      member: schedule.member,
+      statusPiket: schedule.statusPiket,
+      tanggalPiket: schedule.tanggalPiket,
     });
     if (error) {
       logger.error("Validation error:", error.details);
@@ -118,6 +119,19 @@ export const saveGeneratedSchedule = async (
         `Validation error: ${error.details.map((d) => d.message).join(", ")}`
       );
     }
+
+    const statusPiketReceived = schedule.statusPiket;
+    // Make sure statusPiket value is "belum" or "sudah"
+    if (!(statusPiketReceived === "sudah" || statusPiketReceived === "belum")) {
+      throw new Error("Invalid statusPiket value");
+    }
+
+    await PiketSekarang.create({
+      tanggalPiket: schedule.tanggalPiket,
+      nama: schedule.member,
+      tempat: schedule.place,
+      statusPiket: statusPiketReceived,
+    });
   } catch (error) {
     logger.error(error);
   }
