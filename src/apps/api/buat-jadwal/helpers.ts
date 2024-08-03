@@ -95,15 +95,21 @@ export const createScheduleEntry = (
   };
 };
 
-export const isImportantPlaceFulfilled = () => {};
+export const isImportantPlaceFulfilled = (
+  placesInSchedule: Array<string>,
+  importantPlaces: Array<string>
+): boolean => {
+  const placesInScheduleSet = new Set(placesInSchedule);
+  return importantPlaces.every((place) => placesInScheduleSet.has(place));
+};
 
-export const isOneCyclePicketAchieved = () => {};
+export const getPlacesFromSchedule = (
+  schedule: IGeneratedSchedule[]
+): string[] => {
+  return schedule.map((eachSchedule) => eachSchedule.place);
+};
 
-export const getBackupPeople = () => {};
-
-export const saveGeneratedSchedule = async (
-  schedule: IGeneratedSchedule
-) => {
+export const saveGeneratedSchedule = async (schedule: IGeneratedSchedule) => {
   try {
     const { error } = generatedScheduleSchema.validate({
       placeId: schedule.placeId,
