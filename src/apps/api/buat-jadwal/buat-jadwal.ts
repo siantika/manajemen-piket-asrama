@@ -1,5 +1,20 @@
 import { logger } from "../../../utils/logger";
-import { getMembers, getTempat, getRiwayatPiket, shuffleArray, getDefaultPlace, createRiwayatMap, getAvailablePlace, createScheduleEntry, getPlacesFromSchedule, getImportantPlaces, isImportantPlaceFulfilled, deleteAllRiwayatPiket, saveGeneratedSchedule, saveRecapPicket } from "./helpers";
+import {
+  getMembers,
+  getTempat,
+  getRiwayatPiket,
+  shuffleArray,
+  getDefaultPlace,
+  createRiwayatMap,
+  getAvailablePlace,
+  createScheduleEntry,
+  getPlacesFromSchedule,
+  getImportantPlaces,
+  isImportantPlaceFulfilled,
+  deleteAllRiwayatPiket,
+  saveGeneratedSchedule,
+  saveRecapPicket,
+} from "./helpers";
 import { IGeneratedSchedule, IRekapPiket } from "./interfaces";
 
 const generateSchedule = async (): Promise<IGeneratedSchedule[]> => {
@@ -108,15 +123,3 @@ export const saveRecapPiketNow = async (
     logger.error("Error executing generateSchedule:", error);
   }
 };
-
-// Properly call the functions
-(async () => {
-  try {
-    const generatedScheduleNowData: IGeneratedSchedule[] =
-      await generateScheduleNow();
-    await saveGeneratedPiketNow(generatedScheduleNowData);
-    await saveRecapPiketNow(generatedScheduleNowData);
-  } catch (error) {
-    logger.error(error);
-  }
-})();
