@@ -100,8 +100,6 @@ export const isImportantPlaceFulfilled = (
   importantPlaces: Array<string>
 ): boolean => {
   const placesInScheduleSet = new Set(placesInSchedule);
-  console.log(` Places in schedule: ${[... placesInScheduleSet]}`);
-  console.log(`Important places: ${importantPlaces}`);
   return importantPlaces.every((place) => placesInScheduleSet.has(place));
 };
 
