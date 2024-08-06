@@ -103,7 +103,7 @@ export const isImportantPlaceFulfilled = (
   return importantPlaces.every((place) => placesInScheduleSet.has(place));
 };
 
-export const getImportantPlaces = async (): Promise<string[]>=> {
+export const getImportantPlaces = async (): Promise<string[]> => {
   try {
     const importantPlaces = await Tempat.findAll({
       where: {
@@ -111,7 +111,7 @@ export const getImportantPlaces = async (): Promise<string[]>=> {
       },
       attributes: ["namatempat"],
     });
-    return importantPlaces.map(tempat => tempat.namaTempat); 
+    return importantPlaces.map((tempat) => tempat.namaTempat);
   } catch (error) {
     logger.error(error);
     return [];
@@ -122,6 +122,20 @@ export const getPlacesFromSchedule = (
   schedule: IGeneratedSchedule[]
 ): string[] => {
   return schedule.map((eachSchedule) => eachSchedule.place);
+};
+
+export const deleteAllRiwayatPiket = async (): Promise<void> => {
+  try {
+    await RiwayatPiket.destroy({
+      where: {},
+      truncate: true,
+    });
+
+    logger.info("All riwayatPiket records have been deleted.");
+  } catch (error) {
+    logger.error("Error deleting all riwayatPiket records:", error);
+    throw new Error("Failed to delete all riwayatPiket records");
+  }
 };
 
 export const saveGeneratedSchedule = async (schedule: IGeneratedSchedule) => {
