@@ -9,7 +9,10 @@ const CONST = {
   },
   STATUS_PIKET: {
     BELUM: "belum",
-  }
+  },
+  CRON_JOB: {
+    GENERATE_SCHEDULE_TIME: "* * * * *",
+  },
 };
 
 export default CONST;
