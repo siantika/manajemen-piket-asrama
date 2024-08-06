@@ -103,6 +103,21 @@ export const isImportantPlaceFulfilled = (
   return importantPlaces.every((place) => placesInScheduleSet.has(place));
 };
 
+export const getImportantPlaces = async (): Promise<string[]>=> {
+  try {
+    const importantPlaces = await Tempat.findAll({
+      where: {
+        statusTempat: "non reserve",
+      },
+      attributes: ["namatempat"],
+    });
+    return importantPlaces.map(tempat => tempat.namaTempat); 
+  } catch (error) {
+    logger.error(error);
+    return [];
+  }
+};
+
 export const getPlacesFromSchedule = (
   schedule: IGeneratedSchedule[]
 ): string[] => {
