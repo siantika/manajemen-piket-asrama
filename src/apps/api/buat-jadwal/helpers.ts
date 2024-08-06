@@ -100,6 +100,8 @@ export const isImportantPlaceFulfilled = (
   importantPlaces: Array<string>
 ): boolean => {
   const placesInScheduleSet = new Set(placesInSchedule);
+  console.log(` Places in schedule: ${[... placesInScheduleSet]}`);
+  console.log(`Important places: ${importantPlaces}`);
   return importantPlaces.every((place) => placesInScheduleSet.has(place));
 };
 
@@ -107,13 +109,14 @@ export const getImportantPlaces = async (): Promise<string[]> => {
   try {
     const importantPlaces = await Tempat.findAll({
       where: {
-        statusTempat: "non reserve",
+        statusTempat: 'non reserve',
       },
-      attributes: ["namatempat"],
+      attributes: ['namaTempat'],
     });
-    return importantPlaces.map((tempat) => tempat.namaTempat);
+
+    return importantPlaces.map((tempat: { namaTempat: string }) => tempat.namaTempat);
   } catch (error) {
-    logger.error(error);
+    logger.error('Error fetching important places:', error);
     return [];
   }
 };
