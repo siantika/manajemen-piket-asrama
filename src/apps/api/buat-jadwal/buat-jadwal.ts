@@ -1,3 +1,4 @@
+import { applyStyles } from "@popperjs/core";
 import { logger } from "../../../utils/logger";
 import {
   createRiwayatMap,
@@ -9,6 +10,7 @@ import {
   getTempat,
   saveGeneratedSchedule,
   saveRecapPicket,
+  shuffleArray,
 } from "./helpers";
 import { IGeneratedSchedule, IRekapPiket } from "./interfaces";
 
@@ -17,6 +19,10 @@ export const generateSchedule = async (): Promise<IGeneratedSchedule[]> => {
     const members = await getMembers();
     const tempat = await getTempat();
     const riwayat = await getRiwayatPiket();
+
+    // Shuffle the place and member to ensures randomness
+    const tempatAcak = shuffleArray(tempat);
+    const memberAcak= shuffleArray(members);
 
     const { defaultPlace, defaultPlaceId } = getDefaultPlace(tempat);
 
@@ -27,10 +33,10 @@ export const generateSchedule = async (): Promise<IGeneratedSchedule[]> => {
     const usedPlacesToday = new Set<string>(); // To track places used today
 
     // Loop through each member and generate schedule
-    for (const member of members) {
+    for (const member of memberAcak) {
       const availablePlace = getAvailablePlace(
         member.memberId,
-        tempat,
+        tempatAcak,
         usedPlacesToday,
         riwayatMap
       );
