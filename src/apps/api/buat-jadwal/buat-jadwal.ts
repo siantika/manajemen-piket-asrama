@@ -3,11 +3,15 @@ import { logger } from "../../../utils/logger";
 import {
   createRiwayatMap,
   createScheduleEntry,
+  deleteAllRiwayatPiket,
   getAvailablePlace,
   getDefaultPlace,
+  getImportantPlaces,
   getMembers,
+  getPlacesFromSchedule,
   getRiwayatPiket,
   getTempat,
+  isImportantPlaceFulfilled,
   saveGeneratedSchedule,
   saveRecapPicket,
   shuffleArray,
@@ -22,7 +26,7 @@ export const generateSchedule = async (): Promise<IGeneratedSchedule[]> => {
 
     // Shuffle the place and member to ensures randomness
     const tempatAcak = shuffleArray(tempat);
-    const memberAcak= shuffleArray(members);
+    const memberAcak = shuffleArray(members);
 
     const { defaultPlace, defaultPlaceId } = getDefaultPlace(tempat);
 
@@ -65,6 +69,37 @@ export const generateSchedule = async (): Promise<IGeneratedSchedule[]> => {
   }
 };
 
+export const generateScheduleNow = async (): Promise<IGeneratedSchedule[]> => {
+  const generatedSchedule = await generateSchedule();
+  const generatedPlaces = getPlacesFromSchedule(generatedSchedule);
+  const importantPlaces = await getImportantPlaces();
+
+  if (isImportantPlaceFulfilled(generatedPlaces, importantPlaces)) {
+    await deleteAllRiwayatPiket();
+  }
+
+  return generatedSchedule;
+};
+
+export const saveGeneratedPiketNow = async (
+  generatedSchedule: IGeneratedSchedule[]
+) => {
+  try {
+    for (const schedule of generatedSchedule) {
+      const piketSekarang: IGeneratedSchedule = {
+        placeId: schedule.placeId,
+        place: schedule.place,
+        memberId: schedule.memberId,
+        member: schedule.member,
+        statusPiket: schedule.statusPiket as "belum" | "sudah", // Casting to match ISchedule
+        tanggalPiket: schedule.tanggalPiket,
+      };
+      await saveGeneratedSchedule(piketSekarang);
+    }
+  } catch (error) {
+    logger.error(error);
+  }
+};
 // Properly call the functions
 (async () => {
   try {
@@ -78,16 +113,8 @@ export const generateSchedule = async (): Promise<IGeneratedSchedule[]> => {
         statusPiket: schedule.statusPiket as "belum" | "sudah", // Casting to match ISchedule
         tanggalPiket: schedule.tanggalPiket,
       };
-      const piketSekarang: IGeneratedSchedule = {
-        placeId: schedule.placeId,
-        place: schedule.place,
-        memberId: schedule.memberId,
-        member: schedule.member,
-        statusPiket: schedule.statusPiket as "belum" | "sudah", // Casting to match ISchedule
-        tanggalPiket: schedule.tanggalPiket,
-      };
+
       await saveRecapPicket(rekapPiket);
-      await saveGeneratedSchedule(piketSekarang);
     }
   } catch (error) {
     logger.error("Error executing generateSchedule:", error);
