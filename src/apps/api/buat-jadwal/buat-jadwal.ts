@@ -1,24 +1,8 @@
-import { applyStyles } from "@popperjs/core";
 import { logger } from "../../../utils/logger";
-import {
-  createRiwayatMap,
-  createScheduleEntry,
-  deleteAllRiwayatPiket,
-  getAvailablePlace,
-  getDefaultPlace,
-  getImportantPlaces,
-  getMembers,
-  getPlacesFromSchedule,
-  getRiwayatPiket,
-  getTempat,
-  isImportantPlaceFulfilled,
-  saveGeneratedSchedule,
-  saveRecapPicket,
-  shuffleArray,
-} from "./helpers";
+import { getMembers, getTempat, getRiwayatPiket, shuffleArray, getDefaultPlace, createRiwayatMap, getAvailablePlace, createScheduleEntry, getPlacesFromSchedule, getImportantPlaces, isImportantPlaceFulfilled, deleteAllRiwayatPiket, saveGeneratedSchedule, saveRecapPicket } from "./helpers";
 import { IGeneratedSchedule, IRekapPiket } from "./interfaces";
 
-export const generateSchedule = async (): Promise<IGeneratedSchedule[]> => {
+const generateSchedule = async (): Promise<IGeneratedSchedule[]> => {
   try {
     const members = await getMembers();
     const tempat = await getTempat();
@@ -61,7 +45,7 @@ export const generateSchedule = async (): Promise<IGeneratedSchedule[]> => {
       }
     }
 
-    logger.info("Generated Schedule:", schedule);
+    // logger.info("Generated Schedule:", schedule);
     return schedule;
   } catch (error) {
     logger.error("Error generating schedule:", error);
@@ -74,10 +58,15 @@ export const generateScheduleNow = async (): Promise<IGeneratedSchedule[]> => {
   const generatedPlaces = getPlacesFromSchedule(generatedSchedule);
   const importantPlaces = await getImportantPlaces();
 
-  if (isImportantPlaceFulfilled(generatedPlaces, importantPlaces)) {
-    await deleteAllRiwayatPiket();
-  }
+  const isImportant = isImportantPlaceFulfilled(
+    generatedPlaces,
+    importantPlaces
+  );
 
+  if (!isImportant) {
+    await deleteAllRiwayatPiket();
+    logger.info("delete riwayat piket (1 cycle)");
+  }
   return generatedSchedule;
 };
 
@@ -100,13 +89,12 @@ export const saveGeneratedPiketNow = async (
     logger.error(error);
   }
 };
-// Properly call the functions
-(async () => {
-  try {
-    const generatedScheduleData: IGeneratedSchedule[] =
-      await generateSchedule();
 
-    for (const schedule of generatedScheduleData) {
+export const saveRecapPiketNow = async (
+  generatedSchedule: IGeneratedSchedule[]
+) => {
+  try {
+    for (const schedule of generatedSchedule) {
       const rekapPiket: IRekapPiket = {
         placeId: schedule.placeId,
         memberId: schedule.memberId,
@@ -118,5 +106,17 @@ export const saveGeneratedPiketNow = async (
     }
   } catch (error) {
     logger.error("Error executing generateSchedule:", error);
+  }
+};
+
+// Properly call the functions
+(async () => {
+  try {
+    const generatedScheduleNowData: IGeneratedSchedule[] =
+      await generateScheduleNow();
+    await saveGeneratedPiketNow(generatedScheduleNowData);
+    await saveRecapPiketNow(generatedScheduleNowData);
+  } catch (error) {
+    logger.error(error);
   }
 })();
