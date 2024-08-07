@@ -1,14 +1,6 @@
 import { startCronjobs } from "./apps/api/cron-jobs/jadwal-mingguan";
 import app from "./config/app-config";
 import CONST from "./config/consts";
-import { errorHandler } from "./middlewares/error-handler";
-
-app.use(errorHandler);
-
-// Middleware untuk menangani rute yang tidak ditemukan (404)
-app.use((req, res, next) => {
-  res.status(404).send("Page Not Found");
-});
 
 startCronjobs();
 

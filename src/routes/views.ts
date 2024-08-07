@@ -4,7 +4,7 @@ import { renderLoginAdmin } from "../apps/frontend/login-admin";
 
 const router = Router();
 
-router.use("/", renderLoginAdmin);
-router.use("/login-admin", renderLoginAdmin);
+router.get("/", renderHomePage);
+router.get("/login-admin", renderLoginAdmin);
 
 export default router;

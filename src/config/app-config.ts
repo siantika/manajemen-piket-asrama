@@ -5,6 +5,7 @@ import helmet from "helmet";
 import cors from "cors";
 import viewsRoute from "../routes/views";
 import apiRoutes from "../routes/api";
+import { errorHandler } from "../middlewares/error-handler";
 
 dotenv.config();
 const app = express();
@@ -21,7 +22,14 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "../../views"));
 
 // Register routes
-app.use(apiRoutes);
 app.use(viewsRoute);
+app.use(apiRoutes);
+
+app.use(errorHandler);
+
+// Middleware untuk menangani rute yang tidak ditemukan (404)
+app.use((req, res, next) => {
+  res.status(404).send("Page Not Found");
+});
 
 export default app;
