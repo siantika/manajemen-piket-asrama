@@ -1,78 +1,93 @@
+.navbar-brand img {
+  border-radius: 50%;
+  margin-right: 10px;
+}
+.navbar-brand span {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: white;
+}
 
-  .navbar-brand img {
-    border-radius: 50%;
-    margin-right: 10px;
-  }
-  .navbar-brand span {
-    font-weight: bold;
-    font-size: 1.2rem;
-    color: white;
-  }
+.jumbotron {
+  position: relative;
+  background: url("/img/bg-jumbotron.jpg") no-repeat center center;
+  background-size: cover;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+  margin: 0;
+}
 
-  .jumbotron {
-    position: relative;
-    background: url("/img/bg-jumbotron.jpg") no-repeat center center;
-    background-size: cover;
-    color: white;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
-    margin: 0;
-  }
+.container-tanggal {
+  display: inline-block;
+  background-color: #003366;
+  padding: 0;
+  border-radius: 0;
+}
+.lead {
+  color: #ffffff;
+  margin: 0;
+  font-weight: bold;
+}
 
-  .jumbotron::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.25); /* Adjust the opacity and color as needed */
-    z-index: 1;
-  }
-  .jumbotron .container {
-    position: relative;
-    z-index: 2;
-  }
-  
-  .card {
-    margin-bottom: 20px;
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  .card-body {
-    padding: 20px;
-  }
-  .card-title {
-    font-size: 1.2rem;
-    font-weight: bold;
-  }
-  .card-text {
-    font-size: 1rem;
-    margin: 0;
-  }
+.jumbotron::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.25
+  ); /* Adjust the opacity and color as needed */
+  z-index: 1;
+}
+.jumbotron .container {
+  position: relative;
+  z-index: 2;
+}
 
-  .card-title {
-    margin-top: 10px;
-    margin-bottom: 0.5rem; /* Atur sesuai kebutuhan */
-  }
+.card {
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.card-body {
+  padding: 20px;
+}
+.card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.card-text {
+  font-size: 1rem;
+  margin: 0;
+}
 
-  .col-md-12:nth-child(odd) .card-body {
-    background-color: #e3f2fd;
-  }
-  .col-md-12:nth-child(even) .card-body {
-    background-color: #bbdefb;
-  }
-  
+.card-title {
+  margin-top: 10px;
+  margin-bottom: 0.5rem; /* Atur sesuai kebutuhan */
+}
 
-  .footer {
-    background-color: #007bff;
-    color: white;
-    padding: 20px 0;
-  }
-  .footer a {
-    color: white;
-    text-decoration: none;
-  }
-  .footer a:hover {
-    text-decoration: underline;
-  }
+.col-md-12:nth-child(odd) .card-body {
+  background-color: #e3f2fd;
+}
+.col-md-12:nth-child(even) .card-body {
+  background-color: #bbdefb;
+}
+
+.footer {
+  background-color: #007bff;
+  color: white;
+  padding: 20px 0;
+}
+.footer a {
+  color: white;
+  text-decoration: none;
+}
+.footer a:hover {
+  text-decoration: underline;
+}
