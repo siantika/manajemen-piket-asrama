@@ -8,7 +8,8 @@ const CONST = {
     RESERVED: "reserved",
   },
   STATUS_PIKET: {
-    BELUM: "belum",
+    BELUM: "belum" as "belum",
+    SUDAH: "sudah" as "sudah",
   },
   CRON_JOB: {
     GENERATE_SCHEDULE_TIME: "0 23 * * 5",
