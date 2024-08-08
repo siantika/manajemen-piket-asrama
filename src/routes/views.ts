@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { renderHomePage } from "../apps/frontend/home";
-import { renderLoginAdmin } from "../apps/frontend/login-admin";
+import { renderLoginAdmin } from "../apps/frontend/login-admin/login-admin";
 
 const router = Router();
 
