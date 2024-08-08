@@ -6,14 +6,16 @@ import cors from "cors";
 import viewsRoute from "../routes/views";
 import apiRoutes from "../routes/api";
 import { errorHandler } from "../middlewares/error-handler";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 const app = express();
 
 // Middleware setup
-app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(helmet()); // Set security headers
+app.use(cookieParser(process.env.COOKIE_SECRET || "default-secret"));
 app.use(cors());
 
 // Front End rendering server middlewares

@@ -68,37 +68,49 @@
         text-align: center;
         margin-top: 1rem;
       }
+
+      .alert {
+        color: red;
+        text-align: center;
+        margin-top: 1rem;
+      }
     </style>
   </head>
 
   <body>
     <div class="d-flex justify-content-center align-items-center vh-100">
       <div class="login-container">
+        <a href="/" class="back-button"
+          ><i class="fas fa-arrow-circle-left fa-lg"></i
+        ></a>
         <div class="title">Login</div>
-        <form>
-          <!-- Email input -->
+        <div id="error-message" class="alert"></div>
+        <form id="login-form" action="/login" method="POST">
+          <!-- Username input -->
           <div class="form-outline">
             <input
-              type="email"
-              id="form2Example1"
+              type="text"
+              id="emailAdmin"
+              name="username"
               class="form-control"
               required
             />
-            <label class="form-label" for="form2Example1">Email address</label>
+            <label class="form-label" for="emailAdmin">Username</label>
           </div>
 
           <!-- Password input -->
           <div class="form-outline">
             <input
               type="password"
-              id="form2Example2"
+              id="passAdmin"
+              name="password"
               class="form-control"
               required
             />
-            <label class="form-label" for="form2Example2">Password</label>
+            <label class="form-label" for="passAdmin">Password</label>
           </div>
 
-          <!-- Remember me and Forgot password -->
+          <!-- Remember me -->
           <div class="row mb-4">
             <div class="col d-flex justify-content-center">
               <!-- Checkbox -->
@@ -115,11 +127,6 @@
                 >
               </div>
             </div>
-
-            <div class="col">
-              <!-- Simple link -->
-              <a href="#!" class="forgot-password">Forgot password?</a>
-            </div>
           </div>
 
           <!-- Submit button -->
@@ -133,6 +140,6 @@
     <script src="/js/jquery.min.js"></script>
     <script src="/js/popper.min.js"></script>
     <script src="/js/bootstrap.bundle.min.js"></script>
-    <script src="/js/home.js"></script>
+    <script src="/js/login-admin.js"></script>
   </body>
 </html>
