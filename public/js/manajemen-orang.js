@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         'Authorization': `Bearer ${authToken}`,
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ memberId:memberIdSelected, memberName: nameInput.value })
+                    body: JSON.stringify({ memberId: memberIdSelected, memberName: nameInput.value })
                 });
 
                 const data = await response.json();
@@ -85,5 +85,75 @@ document.addEventListener("DOMContentLoaded", function () {
                 alert("Terjadi kesalahan saat mencoba memperbarui nama.");
             }
         });
+    });
+
+    // Handle Add Person
+    addPersonForm.addEventListener('submit', function (e) {
+        e.preventDefault(); // Mencegah form submit default
+
+        const formData = new FormData(addPersonForm);
+        const authToken = localStorage.getItem('authToken');
+
+        fetch('/v1/members', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${authToken}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                memberName: formData.get('memberName'),
+            })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    // Jika respons tidak dalam rentang 200-299
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json(); // Mengurai JSON dari respons
+            })
+            .then(data => {
+
+                const { message, data: personData } = data;
+
+                if (personData) {
+                    // Tambah baris baru ke tabel
+                    const newRow = document.createElement('tr');
+                    newRow.innerHTML = `
+              <td>
+                <strong class="name-display">${personData.memberName}</strong>
+                <input type="text" class="form-control name-input d-none" value="${personData.memberName}" />
+              </td>
+              <td>${personData.memberRole}</td>
+              <td>
+                <button type="button" class="btn btn-warning btn-sm edit-btn">
+                  <i class="bi bi-pencil"></i> Edit
+                </button>
+                <button type="button" class="btn btn-success btn-sm save-btn d-none">
+                  <i class="bi bi-check"></i> Simpan
+                </button>
+                <form class="delete-form" data-id="${personData.memberId}" style="display:inline;">
+                  <button type="button" class="btn btn-danger btn-sm delete-btn">
+                    <i class="bi bi-trash"></i> Hapus
+                  </button>
+                </form>
+              </td>
+            `;
+                    document.querySelector('table tbody').appendChild(newRow);
+
+                    alert(`*${personData.memberName}* berhasil ditambahkan!`);
+                    // Reset form
+                    addPersonForm.reset();
+
+                    // Tutup modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('addPersonModal'));
+                    modal.hide();
+                } else {
+                    alert('Gagal menambah orang: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat menambah orang.');
+            });
     });
 });

@@ -133,11 +133,39 @@
             </tbody>
             
         </table>
-        <a href="/people/new" class="btn btn-success mt-3">
-            <i class="bi bi-person-plus"></i> Tambah Orang
+        <a href="#" class="btn btn-success mt-3" data-bs-toggle="modal" data-bs-target="#addPersonModal">
+          <i class="bi bi-person-plus"></i> Tambah Orang
         </a>
     </div>
     
+     <!-- Modal Tambah Orang -->
+     <div class="modal fade" id="addPersonModal" tabindex="-1" aria-labelledby="addPersonModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addPersonModalLabel">Tambah Orang</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="addPersonForm">
+              <div class="mb-3">
+                <label for="memberName" class="form-label">Nama</label>
+                <input type="text" class="form-control" id="memberName" name="memberName" required>
+              </div>
+              <div class="mb-3">
+                <label for="memberRole" class="form-label">Peran</label>
+                <select class="form-select" id="memberRole" name="memberRole">
+                  <option value="Penghuni">Penghuni</option>
+                  <option value="Pengelola">Pengelola</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-primary">Simpan</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
     <!-- Bootstrap JS and Popper.js -->
     <script src="/js/jquery.min.js"></script>
