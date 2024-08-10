@@ -5,11 +5,13 @@ document.addEventListener("DOMContentLoaded", function () {
         button.addEventListener('click', function () {
             const form = this.closest('form');
             const memberId = form.getAttribute('data-id');
+            const authToken = localStorage.getItem('authToken');
 
             if (confirm('Apakah Anda yakin ingin menghapus anggota ini?')) {
                 fetch(`/v1/members/${memberId}`, {
                     method: 'DELETE',
                     headers: {
+                        'Authorization': `Bearer ${authToken}`,
                         'Content-Type': 'application/json',
                     },
                 })
