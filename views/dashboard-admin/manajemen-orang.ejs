@@ -102,30 +102,38 @@
       <!-- Content -->
       <div class="container mt-4">
         <h1 class="mb-4"><%= title %></h1>
-        <div class="row">
-            <% orang.forEach(person => { %>
-                <div class="col-md-4">
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title text-center"> <strong> <%= person.memberName %> </strong></h5>
-                            <p class="card-text"><strong>Peran:</strong> "Penghuni"</p>
-                            <a href="/people/<%= person.id %>/edit" class="btn btn-warning">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nama</th>
+                    <th>Peran</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% orang.forEach(person => { %>
+                    <tr>
+                        <td><strong><%= person.memberName %></strong></td>
+                        <td>Penghuni</td>
+                        <td>
+                            <a href="/people/<%= person.id %>/edit" class="btn btn-warning btn-sm">
                                 <i class="bi bi-pencil"></i> Edit
                             </a>
-                            <form action="/members/delete/:<%= person.id %>" method="DELETE" style="display:inline;">
-                                <button type="submit" class="btn btn-danger">
+                            <form action="/members/delete/<%= person.id %>" method="POST" style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm">
                                     <i class="bi bi-trash"></i> Hapus
                                 </button>
                             </form>
-                        </div>
-                    </div>
-                </div>
-            <% }); %>
-        </div>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
         <a href="/people/new" class="btn btn-success mt-3">
             <i class="bi bi-person-plus"></i> Tambah Orang
         </a>
     </div>
+    
 
     <!-- Bootstrap JS and Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
