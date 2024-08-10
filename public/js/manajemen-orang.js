@@ -1,45 +1,41 @@
 document.addEventListener("DOMContentLoaded", function () {
     const deleteButtons = document.querySelectorAll('.delete-btn');
+    const editButtons = document.querySelectorAll('.edit-btn');
+    const saveButtons = document.querySelectorAll('.save-btn');
 
     deleteButtons.forEach(button => {
-        button.addEventListener('click', function () {
+        button.addEventListener('click', async function () {
             const form = this.closest('form');
             const memberId = form.getAttribute('data-id');
             const authToken = localStorage.getItem('authToken');
 
             if (confirm('Apakah Anda yakin ingin menghapus anggota ini?')) {
-                fetch(`/v1/members/${memberId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${authToken}`,
-                        'Content-Type': 'application/json',
-                    },
-                })
-                .then(response => {
+                try {
+                    const response = await fetch(`/v1/members/${memberId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `Bearer ${authToken}`,
+                            'Content-Type': 'application/json',
+                        },
+                    });
+
                     if (!response.ok) {
-                        // Jika response status bukan 2xx, lempar error
-                        return response.text().then(text => { throw new Error(text); });
+                        const errorText = await response.text();
+                        throw new Error(errorText);
                     }
-                    return response.json(); // Mengurai JSON jika response OK
-                })
-                .then(data => {
+
+                    const data = await response.json();
                     alert(data.message);
                     location.reload(); // Refresh halaman setelah berhasil menghapus
-                })
-                .catch(error => {
+                } catch (error) {
                     console.error('Error:', error);
                     alert("Terjadi kesalahan saat mencoba menghapus anggota: " + error.message);
-                });
+                }
             }
         });
     });
-});
 
-document.addEventListener("DOMContentLoaded", function () {
-    const editButtons = document.querySelectorAll('.edit-btn');
-    const saveButtons = document.querySelectorAll('.save-btn');
-
-    editButtons.forEach((button, index) => {
+    editButtons.forEach((button) => {
         button.addEventListener('click', function () {
             const row = this.closest('tr');
             const nameDisplay = row.querySelector('.name-display');
@@ -54,22 +50,25 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    saveButtons.forEach((button, index) => {
-        button.addEventListener('click', function () {
+    saveButtons.forEach((button) => {
+        button.addEventListener('click', async function () {
             const row = this.closest('tr');
             const nameInput = row.querySelector('.name-input');
-            const memberId = row.querySelector('.delete-form').getAttribute('data-id');
+            const memberIdSelected = row.querySelector('.delete-form').getAttribute('data-id');
+            const authToken = localStorage.getItem('authToken');
 
-            // Kirim perubahan ke server dengan AJAX
-            fetch(`/people/${memberId}/edit`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ memberName: nameInput.value })
-            })
-            .then(response => response.json())
-            .then(data => {
+            try {
+                const response = await fetch(`/v1/members`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ memberId:memberIdSelected, memberName: nameInput.value })
+                });
+
+                const data = await response.json();
+
                 if (response.ok) {
                     // Jika berhasil, perbarui tampilan nama dan sembunyikan input
                     row.querySelector('.name-display').textContent = nameInput.value;
@@ -81,11 +80,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 } else {
                     alert(`Gagal memperbarui nama: ${data.message}`);
                 }
-            })
-            .catch(error => {
+            } catch (error) {
                 console.error('Error:', error);
                 alert("Terjadi kesalahan saat mencoba memperbarui nama.");
-            });
+            }
         });
     });
 });
