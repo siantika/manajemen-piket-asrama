@@ -7,7 +7,7 @@ document
     const data = Object.fromEntries(formData.entries());
 
     try {
-      const response = await fetch("/login", {
+      const response = await fetch("/v1/login-admin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -16,7 +16,8 @@ document
       const result = await response.json();
 
       if (response.ok) {
-        window.location.href = "/dashboard-admin"; 
+        localStorage.setItem('authToken', result.token)
+        window.location.href = "/dashboard-admin";
       } else {
         document.getElementById("error-message").textContent =
           result.message || "Login failed";
