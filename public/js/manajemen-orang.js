@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", function () {
             `;
                     document.querySelector('table tbody').appendChild(newRow);
 
-                    alert(`*${personData.memberName}* berhasil ditambahkan!`);
+                    alert(`"${personData.memberName}" berhasil ditambahkan!`);
                     // Reset form
                     addPersonForm.reset();
 
