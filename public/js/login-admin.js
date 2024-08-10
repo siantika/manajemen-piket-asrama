@@ -16,7 +16,7 @@ document
       const result = await response.json();
 
       if (response.ok) {
-        window.location.href = "/dashboard"; 
+        window.location.href = "/dashboard-admin"; 
       } else {
         document.getElementById("error-message").textContent =
           result.message || "Login failed";
