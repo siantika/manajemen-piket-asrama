@@ -7,8 +7,8 @@ document.addEventListener("DOMContentLoaded", function () {
             const memberId = form.getAttribute('data-id');
 
             if (confirm('Apakah Anda yakin ingin menghapus anggota ini?')) {
-                fetch(`/v1/members/${memberId}/delete`, {
-                    method: 'POST',
+                fetch(`/v1/members/${memberId}`, {
+                    method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
                     },

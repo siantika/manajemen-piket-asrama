@@ -16,7 +16,7 @@ const router = Router();
 router.post("/members", auth, addMemberHandler);
 router.get("/members", readAllMemberHandler);
 router.put("/members", auth, updateMemberHandler);
-router.post("/members/:memberId/delete", deleteMemberHandler);
+router.delete("/members/:memberId", deleteMemberHandler);
 
 router.post("/places", auth, addPlaceHandler);
 router.get("/places", readAllPlacesHandler);
