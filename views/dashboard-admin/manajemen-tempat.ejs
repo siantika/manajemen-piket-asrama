@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        /* Style tambahan untuk dashboard */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .sidebar {
+            background-color: #007bff;
+            min-height: 100vh;
+        }
+
+        .sidebar .nav-link {
+            color: #ffffff;
+        }
+
+        .sidebar .nav-link.active {
+            background-color: #0056b3;
+            color: #ffffff;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .navbar {
+            background-color: #0056b3;
+            color: #ffffff;
+        }
+
+        .navbar .navbar-brand,
+        .navbar .nav-link {
+            color: #ffffff;
+        }
+
+        .navbar .nav-link:hover {
+            color: #d1d1d1;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                margin-left: 0;
+            }
+
+            .sidebar {
+                min-height: auto;
+                padding-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar Top -->
+    <%- include('navbar') %>
+
+    <div class="d-flex">
+        <!-- Sidebar -->
+         <%- include('sidebar') %>
+
+        <!-- Content -->
+        <div class="container mt-4">
+            <h1 class="mb-4">
+                <%= title %>
+            </h1>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Tempat</th>
+                        <th>Status </th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% tempat.forEach(tempat => { %>
+                        <tr>
+                            <td>
+                                <strong class="name-display">
+                                    <%= tempat.namaTempat %>
+                                </strong>
+                                <input type="text" class="form-control name-input d-none" value="<%= tempat.namaTempat %>" />
+                            </td>
+                            <td>
+                                <strong class="status-display">
+                                    <%= tempat.statusTempat === 'reserved' ? 'Bersama' : 'Individu' %>
+                                </strong>
+                                <select class="form-select status-input d-none" id="statusTempat" name="statusTempat">
+                                    <option value="non reserve" <%= tempat.statusTempat === 'non reserve' ? 'selected' : '' %>>Individu</option>
+                                    <option value="reserved" <%= tempat.statusTempat === 'reserved' ? 'selected' : '' %>>Bersama</option>
+                                </select>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-warning btn-sm edit-btn">
+                                    <i class="bi bi-pencil"></i> Edit
+                                </button>
+                                <button type="button" class="btn btn-success btn-sm save-btn d-none">
+                                    <i class="bi bi-check"></i> Simpan
+                                </button>
+                                <form class="delete-form" data-id="<%= tempat.tempatId %>" style="display:inline;">
+                                    <button type="button" class="btn btn-danger btn-sm delete-btn">
+                                        <i class="bi bi-trash"></i> Hapus
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+                
+                
+            </table>
+            <a href="#" class="btn btn-success mt-3" data-bs-toggle="modal" data-bs-target="#addTempatModal">
+                <i class="bi bi-tempat-plus"></i> Tambah tempat
+            </a>
+        </div>
+
+        <!-- Modal Tambah tempat -->
+        <div class="modal fade" id="addTempatModal" tabindex="-1" aria-labelledby="addTempatModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addTempatModalLabel">Tambah tempat</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addTempatForm">
+                            <div class="mb-3">
+                                <label for="namaTempat" class="form-label">Nama</label>
+                                <input type="text" class="form-control" id="namaTempat" name="namaTempat" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="statusTempat" class="form-label">Status</label>
+                                <select class="form-select" id="statusTempat" name="statusTempat">
+                                    <option value="non reserve">Individu</option>
+                                    <option value="reserved">Bersama</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Bootstrap JS and Popper.js -->
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/popper.min.js"></script>
+        <script src="/js/bootstrap.bundle.min.js"></script>
+        <script src="/js/manajemen-tempat.js"></script>
+        </script>
+</body>
+
+</html>

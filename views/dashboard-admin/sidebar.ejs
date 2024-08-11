@@ -1,0 +1,26 @@
+<!-- Sidebar -->
+<nav class="sidebar d-flex flex-column p-3">
+    <h4 class="text-white">Menu</h4>
+    <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+            <a href="/manajemen-piket" class="nav-link <%= currentPage === 'piket' ? 'active' : '' %>" aria-current="<%= currentPage === 'piket' ? 'page' : '' %>">
+                Manajemen Piket
+            </a>
+        </li>
+        <li>
+            <a href="/manajemen-tempat" class="nav-link <%= currentPage === 'tempat' ? 'active' : '' %>" aria-current="<%= currentPage === 'tempat' ? 'page' : '' %>">
+                Manajemen Tempat
+            </a>
+        </li>
+        <li>
+            <a href="/manajemen-orang" class="nav-link <%= currentPage === 'orang' ? 'active' : '' %>" aria-current="<%= currentPage === 'orang' ? 'page' : '' %>">
+                Manajemen Orang
+            </a>
+        </li>
+        <li>
+            <a href="/rekap-piket" class="nav-link <%= currentPage === 'rekap' ? 'active' : '' %>" aria-current="<%= currentPage === 'rekap' ? 'page' : '' %>">
+                Rekap Piket
+            </a>
+        </li>
+    </ul>
+</nav>
