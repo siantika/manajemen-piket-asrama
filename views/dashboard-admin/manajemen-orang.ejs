@@ -76,26 +76,8 @@
 
     <div class="d-flex">
       <!-- Sidebar -->
-      <nav class="sidebar d-flex flex-column p-3">
-        <h4 class="text-white">Menu</h4>
-        <ul class="nav nav-pills flex-column mb-auto">
-          <li class="nav-item">
-            <a href="#" class="nav-link">Manajemen Piket</a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">Manajemen Tempat</a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link active" aria-current="page"
-              >Manajemen Orang</a
-            >
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">Rekap Piket</a>
-          </li>
-        </ul>
-      </nav>
-
+      <%- include('sidebar') %>
+      
       <!-- Content -->
       <div class="container mt-4">
         <h1 class="mb-4"><%= title %></h1>
