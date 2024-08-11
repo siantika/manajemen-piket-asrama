@@ -82,20 +82,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% tempat.forEach(tempat=> { %>
+                    <% tempat.forEach(tempat => { %>
                         <tr>
                             <td>
                                 <strong class="name-display">
                                     <%= tempat.namaTempat %>
                                 </strong>
-                                <input type="text" class="form-control name-input d-none"
-                                    value="<%= tempat.namaTempat %>" />
+                                <input type="text" class="form-control name-input d-none" value="<%= tempat.namaTempat %>" />
                             </td>
-                            <td> <strong class="name-display">
-                                    <%= tempat.statusTempat %>
+                            <td>
+                                <strong class="status-display">
+                                    <%= tempat.statusTempat === 'reserved' ? 'Bersama' : 'Individu' %>
                                 </strong>
-                                <input type="text" class="form-control name-input d-none"
-                                    value="<%= tempat.statusTempat %>" />
+                                <select class="form-select status-input d-none" id="statusTempat" name="statusTempat">
+                                    <option value="non reserve" <%= tempat.statusTempat === 'non reserve' ? 'selected' : '' %>>Individu</option>
+                                    <option value="reserved" <%= tempat.statusTempat === 'reserved' ? 'selected' : '' %>>Bersama</option>
+                                </select>
                             </td>
                             <td>
                                 <button type="button" class="btn btn-warning btn-sm edit-btn">
@@ -111,9 +113,10 @@
                                 </form>
                             </td>
                         </tr>
-                        <% }); %>
+                    <% }); %>
                 </tbody>
-
+                
+                
             </table>
             <a href="#" class="btn btn-success mt-3" data-bs-toggle="modal" data-bs-target="#addTempatModal">
                 <i class="bi bi-tempat-plus"></i> Tambah tempat
@@ -138,8 +141,8 @@
                             <div class="mb-3">
                                 <label for="statusTempat" class="form-label">Status</label>
                                 <select class="form-select" id="statusTempat" name="statusTempat">
-                                    <option value="non reserve">non reserve</option>
-                                    <option value="reserved">reserved</option>
+                                    <option value="non reserve">Individu</option>
+                                    <option value="reserved">Bersama</option>
                                 </select>
                             </div>
                             <button type="submit" class="btn btn-primary">Simpan</button>
