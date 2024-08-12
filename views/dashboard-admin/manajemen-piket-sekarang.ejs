@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        /* Style tambahan untuk dashboard */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .sidebar {
+            background-color: #007bff;
+            min-height: 100vh;
+        }
+
+        .sidebar .nav-link {
+            color: #ffffff;
+        }
+
+        .sidebar .nav-link.active {
+            background-color: #0056b3;
+            color: #ffffff;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .navbar {
+            background-color: #0056b3;
+            color: #ffffff;
+        }
+
+        .navbar .navbar-brand,
+        .navbar .nav-link {
+            color: #ffffff;
+        }
+
+        .navbar .nav-link:hover {
+            color: #d1d1d1;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                margin-left: 0;
+            }
+
+            .sidebar {
+                min-height: auto;
+                padding-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar Top -->
+    <%- include('navbar') %>
+
+    <div class="d-flex">
+        <!-- Sidebar -->
+         <%- include('sidebar') %>
+
+        <!-- Content -->
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <h1>Manajemen Piket</h1>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tanggal Piket</th>
+                        <th>Nama</th>
+                        <th>Tempat</th>
+                        <th>Status Piket</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (piket) { %>
+                        <% piket.forEach(function(item) { %>
+                            <tr>
+                                <td><%= item.id %></td>
+                                <td><%= item.tanggal_piket %></td>
+                                <td><%= item.nama %></td>
+                                <td>
+                                    <select class="form-control">
+                                        <% if (item.tempat) { %>
+                                            <% item.tempat.forEach(function(tempat) { %>
+                                                <option><%= tempat %></option>
+                                            <% }); %>
+                                        <% } %>
+                                    </select>
+                                </td>
+                                <td><%= item.status_piket %></td>
+                                <td>
+                                    <button type="button" class="btn btn-info btn-sm">Simpan Perubahan</button>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    <% } %>
+                </tbody>
+            </table>
+        </main>
+
+
+        <!-- Bootstrap JS and Popper.js -->
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/popper.min.js"></script>
+        <script src="/js/bootstrap.bundle.min.js"></script>
+        <script src="/js/manajemen-tempat.js"></script>
+        </script>
+</body>
+
+</html>
