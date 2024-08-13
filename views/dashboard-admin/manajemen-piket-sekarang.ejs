@@ -64,58 +64,56 @@
     <!-- Navbar Top -->
     <%- include('navbar') %>
 
-    <div class="d-flex">
-        <!-- Sidebar -->
-         <%- include('sidebar') %>
+        <div class="d-flex">
+            <!-- Sidebar -->
+            <%- include('sidebar') %>
 
-        <!-- Content -->
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-            <h1>Manajemen Piket</h1>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Tanggal Piket</th>
-                        <th>Nama</th>
-                        <th>Tempat</th>
-                        <th>Status Piket</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% if (piket) { %>
-                        <% piket.forEach(function(item) { %>
+                <!-- Content -->
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                    <h1>Manajemen Piket</h1>
+                    <table class="table table-striped">
+                        <thead>
                             <tr>
-                                <td><%= item.id %></td>
-                                <td><%= item.tanggal_piket %></td>
-                                <td><%= item.nama %></td>
-                                <td>
-                                    <select class="form-control">
-                                        <% if (item.tempat) { %>
-                                            <% item.tempat.forEach(function(tempat) { %>
-                                                <option><%= tempat %></option>
-                                            <% }); %>
-                                        <% } %>
-                                    </select>
-                                </td>
-                                <td><%= item.status_piket %></td>
-                                <td>
-                                    <button type="button" class="btn btn-info btn-sm">Simpan Perubahan</button>
-                                </td>
+                                <th>Tanggal Piket</th>
+                                <th>Nama</th>
+                                <th>Tempat</th>
+                                <th>Status Piket</th>
+                                <th>Aksi</th>
                             </tr>
-                        <% }); %>
-                    <% } %>
-                </tbody>
-            </table>
-        </main>
+                        </thead>
+                        <tbody>
+                            <% if (piket) { %>
+                                <% piket.forEach(function(item) { %>
+                                    <tr>
+                                        <td>
+                                            <%= item.tanggalPiket %>
+                                        </td>
+                                        <td>
+                                            <%= item.nama %>
+                                        </td>
+                                        <td>
+                                            <%= item.tempat %>
+                                        </td>
+                                        <td>
+                                            <%= item.statusPiket %>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-info btn-sm">Simpan Perubahan</button>
+                                        </td>
+                                    </tr>
+                                    <% }); %>
+                                        <% } %>
+                        </tbody>
+                    </table>
+                </main>
 
 
-        <!-- Bootstrap JS and Popper.js -->
-        <script src="/js/jquery.min.js"></script>
-        <script src="/js/popper.min.js"></script>
-        <script src="/js/bootstrap.bundle.min.js"></script>
-        <script src="/js/manajemen-tempat.js"></script>
-        </script>
+                <!-- Bootstrap JS and Popper.js -->
+                <script src="/js/jquery.min.js"></script>
+                <script src="/js/popper.min.js"></script>
+                <script src="/js/bootstrap.bundle.min.js"></script>
+                <script src="/js/manajemen-tempat.js"></script>
+                </script>
 </body>
 
 </html>

@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { readAllMembers } from "../../api/manajemen-piket/member";
 import { readAllPlaces } from "../../api/manajemen-piket/tempat";
 import path from "path";
+import { getAllPikets, updatePiket } from "../../api/manajemen-jadwal-piket-sekarang/piket-sekarang";
+import { getAvailablePlace } from "../../api/buat-jadwal/helpers";
 
 export const renderDashboardAdmin = (req: Request, res: Response) => {
   res.render("dashboard-admin/main", { currentPage: "main" });
@@ -29,17 +31,12 @@ export const renderManajemenPiketSekarang = async (
   req: Request,
   res: Response
 ) => {
-  const piket = [
-    { id: "99yasdh2", tanggal_piket: new Date(), nama: "Sian" },
-    { id: "99yasdh3", tanggal_piket: new Date(), nama: "Arbi" },
-  ];
-  console.log(
-    "Rendering view from:",
-    path.join(__dirname, "views/dashboard-admin/manajemen-piket-sekarang")
-  );
+  const piket = await getAllPikets();
+  const tempatPiket = await readAllPlaces();
   res.render("dashboard-admin/manajemen-piket-sekarang", {
     piket,
-    title: "Manajemen Tempat",
+    tempatPiket,
+    title: "Manajemen Piket",
     currentPage: "piket",
   });
 };
