@@ -87,12 +87,15 @@
                                 <td><%= item.tanggalPiket %></td>
                                 <td><%= item.nama %></td>
                                 <td>
-                                    <strong class="text-display"><%= item.tempat %></strong>
-                                    <select class="form-select input-tempat d-none">
+                                    <strong class="text-display" id="tempat-<%= index %>"><%= item.tempat %></strong>
+                                    <select class="form-select input-tempat d-none" id="dropdown-<%= index %>">
                                         <% tempatPiket.forEach(function(tempat) { %>
-                                            <option value="<%= tempat.id %>"><%= tempat.namaTempat %></option>
+                                            <option value="<%= tempat.namaTempat %>" <%= tempat.namaTempat === item.tempat ? 'selected' : '' %>><%= tempat.namaTempat %></option>
                                         <% }); %>
                                     </select>
+                                    <button type="button" class="btn btn-sm btn-primary change-place-btn" data-index="<%= index %>">
+                                        Ubah Tempat
+                                    </button>
                                 </td>
                                 <td id="status-<%= index %>"><%= item.statusPiket %></td>
                                 <td>
@@ -111,7 +114,7 @@
             </table>
         </main>
     </div>
-    </div>
+
     
     
 
