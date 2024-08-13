@@ -63,56 +63,64 @@
 <body>
     <!-- Navbar Top -->
     <%- include('navbar') %>
-
-        <div class="d-flex">
-            <!-- Sidebar -->
-            <%- include('sidebar') %>
-
-                <!-- Content -->
-                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-                    <h1>Manajemen Piket</h1>
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Tanggal Piket</th>
-                                <th>Nama</th>
-                                <th>Tempat</th>
-                                <th>Status Piket</th>
-                                <th>Aksi</th>
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <%- include('sidebar') %>
+    
+        <!-- Content -->
+        <main class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <h1>Manajemen Piket</h1>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Tanggal Piket</th>
+                        <th>Nama</th>
+                        <th>Tempat</th>
+                        <th>Status Piket</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (piket && piket.length > 0) { %>
+                        <% piket.forEach(function(item, index) { %>
+                            <tr id="row-<%= index %>">
+                                <td><%= item.tanggalPiket %></td>
+                                <td><%= item.nama %></td>
+                                <td>
+                                    <strong class="text-display"><%= item.tempat %></strong>
+                                    <select class="form-select input-tempat d-none">
+                                        <% tempatPiket.forEach(function(tempat) { %>
+                                            <option value="<%= tempat.id %>"><%= tempat.namaTempat %></option>
+                                        <% }); %>
+                                    </select>
+                                </td>
+                                <td id="status-<%= index %>"><%= item.statusPiket %></td>
+                                <td>
+                                    <button type="button" class="btn btn-warning btn-sm edit-btn" data-index="<%= index %>">
+                                        <i class="bi bi-pencil"></i> Validasi
+                                    </button>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <% if (piket) { %>
-                                <% piket.forEach(function(item) { %>
-                                    <tr>
-                                        <td>
-                                            <%= item.tanggalPiket %>
-                                        </td>
-                                        <td>
-                                            <%= item.nama %>
-                                        </td>
-                                        <td>
-                                            <%= item.tempat %>
-                                        </td>
-                                        <td>
-                                            <%= item.statusPiket %>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-info btn-sm">Simpan Perubahan</button>
-                                        </td>
-                                    </tr>
-                                    <% }); %>
-                                        <% } %>
-                        </tbody>
-                    </table>
-                </main>
+                        <% }); %>
+                    <% } else { %>
+                        <tr>
+                            <td colspan="5" class="text-center">Tidak ada data piket</td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </main>
+    </div>
+    </div>
+    
+    
 
 
                 <!-- Bootstrap JS and Popper.js -->
                 <script src="/js/jquery.min.js"></script>
                 <script src="/js/popper.min.js"></script>
                 <script src="/js/bootstrap.bundle.min.js"></script>
-                <script src="/js/manajemen-tempat.js"></script>
+                <script src="/js/manajemen-piket-sekarang.js"></script>
                 </script>
 </body>
 
