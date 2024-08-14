@@ -6,7 +6,7 @@ import { logger } from "../../../utils/logger";
 // Definisikan tipe untuk update parsial
 export type PiketSekarangUpdate = {
   name?: string;
-  tempatPiket?: string;
+  tempat?: string;
   tanggalPiket?: Date;
   statusPiket?: "belum" | "sudah";
 };
@@ -16,13 +16,6 @@ const addSchema = Joi.object({
   name: Joi.string().required(),
   tempatPiket: Joi.string().required(),
   tanggalPiket: Joi.date().required(),
-});
-
-const updateSchema = Joi.object({
-  name: Joi.string().optional(),
-  tempatPiket: Joi.string().optional(),
-  tanggalPiket: Joi.date().optional(),
-  statusPiket: Joi.string().valid("belum", "sudah").optional(),
 });
 
 const deleteSchema = Joi.object({
@@ -68,17 +61,8 @@ export const getAllPikets = async () => {
 };
 
 // Fungsi untuk memperbarui jadwal
-export const updatePiket = async (
-  id: number,
-  updates: PiketSekarangUpdate
-) => {
+export const updatePiket = async (id: number, updates: PiketSekarangUpdate) => {
   try {
-    // Validasi data menggunakan skema Joi
-    const { error } = updateSchema.validate(updates);
-    if (error) {
-      throw new Error(`Validation error: ${error.message}`);
-    }
-
     // Memperbarui PiketSekarang
     const [affectedRows] = await PiketSekarang.update(updates, {
       where: { id },
@@ -101,6 +85,7 @@ export const updatePiket = async (
     throw new Error("Failed to update PiketSekarang");
   }
 };
+
 // Fungsi untuk menghapus Piket
 export const removePiket = async (id: number) => {
   try {
