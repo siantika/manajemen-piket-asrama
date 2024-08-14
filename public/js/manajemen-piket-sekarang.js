@@ -1,6 +1,25 @@
 document.addEventListener("DOMContentLoaded", function () {
     let tempData = {}; // Temporary storage for changes
 
+    // Initialize validation buttons based on status
+    document.querySelectorAll('.edit-btn').forEach(button => {
+        const index = button.getAttribute('data-index');
+        const statusCell = document.getElementById('status-' + index);
+        const currentStatus = statusCell.textContent.trim();
+
+        if (currentStatus === 'sudah') {
+            // Set button to already validated state
+            button.classList.remove('btn-warning');
+            button.classList.add('btn-success');
+            button.innerHTML = '<i class="bi bi-x"></i> Batalkan Validasi';
+        } else {
+            // Set button to unvalidated state
+            button.classList.remove('btn-success');
+            button.classList.add('btn-warning');
+            button.innerHTML = '<i class="bi bi-pencil"></i> Validasi';
+        }
+    });
+
     // Event handler for changing place
     document.querySelectorAll('.change-place-btn').forEach(button => {
         button.addEventListener('click', function() {
@@ -41,14 +60,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (currentStatus === 'sudah') {
                 statusCell.textContent = 'Belum';
-                this.classList.remove('btn-success');
-                this.classList.add('btn-warning');
-                this.innerHTML = '<i class="bi bi-pencil"></i> Validasi';
+                button.classList.remove('btn-success');
+                button.classList.add('btn-warning');
+                button.innerHTML = '<i class="bi bi-pencil"></i> Validasi';
             } else {
                 statusCell.textContent = 'sudah';
-                this.classList.remove('btn-warning');
-                this.classList.add('btn-success');
-                this.innerHTML = '<i class="bi bi-x"></i> Batalkan Validasi';
+                button.classList.remove('btn-warning');
+                button.classList.add('btn-success');
+                button.innerHTML = '<i class="bi bi-x"></i> Batalkan Validasi';
             }
 
             if (tempData[index]) {
