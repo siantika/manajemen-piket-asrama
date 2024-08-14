@@ -107,3 +107,15 @@ export const removePiket = async (id: number) => {
     throw new Error("PiketSekarang not found");
   }
 };
+
+export const removeAllPiket = async () => {
+  try {
+    await PiketSekarang.destroy({
+      truncate: true,
+      restartIdentity: true,  
+      cascade: false  
+    });
+  } catch (error) {
+    throw new Error(`Failed to remove all piket records: ${error}`);
+  }
+};
