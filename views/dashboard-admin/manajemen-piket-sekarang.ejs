@@ -8,7 +8,6 @@
     <!-- Bootstrap CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet" />
     <style>
-        /* Style tambahan untuk dashboard */
         body {
             font-family: Arial, sans-serif;
             background-color: #f8f9fa;
@@ -58,7 +57,6 @@
             }
         }
 
-        /* Style tambahan untuk dropdown tempat */
         .input-tempat {
             margin-top: 10px;
             width: 100%;
@@ -88,79 +86,68 @@
 <body>
     <!-- Navbar Top -->
     <%- include('navbar') %>
-        <div class="d-flex">
-            <!-- Sidebar -->
-            <%- include('sidebar') %>
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <%- include('sidebar') %>
 
-                <!-- Content -->
-                <main class="col-md-9 ml-sm-auto col-lg-10 px-4">
-                    <h1>Manajemen Piket</h1>
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Tanggal Piket</th>
-                                <th>Nama</th>
-                                <th>Tempat</th>
-                                <th>Status Piket</th>
-                                <th>Aksi</th>
+        <!-- Content -->
+        <main class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <h1>Manajemen Piket</h1>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Tanggal Piket</th>
+                        <th>Nama</th>
+                        <th>Tempat</th>
+                        <th>Status Piket</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (piket && piket.length > 0) { %>
+                        <% piket.forEach(function(item, index) { %>
+                            <tr id="row-<%= index %>">
+                                <td><%= item.tanggalPiket %></td>
+                                <td><%= item.nama %></td>
+                                <td>
+                                    <div class="form-group">
+                                        <strong class="text-display" id="tempat-<%= index %>"><%= item.tempat %></strong>
+                                        <select class="form-select input-tempat d-none" id="dropdown-<%= index %>">
+                                            <% tempatPiket.forEach(function(tempat) { %>
+                                                <option value="<%= tempat.namaTempat %>" <%= tempat.namaTempat === item.tempat ? 'selected' : '' %>><%= tempat.namaTempat %></option>
+                                            <% }); %>
+                                        </select>
+                                    </div>
+                                    <button type="button" class="btn btn-sm btn-primary change-place-btn" data-index="<%= index %>" data-id="<%= item.id %>">
+                                        <i class="bi bi-pencil"></i> Ubah Tempat
+                                    </button>
+                                </td>
+                                <td id="status-<%= index %>"><%= item.statusPiket %></td>
+                                <td>
+                                    <button type="button" class="btn btn-warning btn-sm edit-btn" data-index="<%= index %>" data-id="<%= item.id %>">
+                                        <i class="bi bi-pencil"></i> Validasi
+                                    </button>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <% if (piket && piket.length> 0) { %>
-                                <% piket.forEach(function(item, index) { %>
-                                    <tr id="row-<%= index %>">
-                                        <td>
-                                            <%= item.tanggalPiket %>
-                                        </td>
-                                        <td>
-                                            <%= item.nama %>
-                                        </td>
-                                        <td>
-                                            <div class="form-group">
-                                                <strong class="text-display" id="tempat-<%= index %>">
-                                                    <%= item.tempat %>
-                                                </strong>
-                                                <select class="form-select input-tempat d-none"
-                                                    id="dropdown-<%= index %>">
-                                                    <% tempatPiket.forEach(function(tempat) { %>
-                                                        <option value="<%= tempat.namaTempat %>"
-                                                            <%=tempat.namaTempat===item.tempat ? 'selected' : '' %>><%=
-                                                                tempat.namaTempat %>
-                                                        </option>
-                                                        <% }); %>
-                                                </select>
-                                            </div>
-                                            <button type="button" class="btn btn-sm btn-primary change-place-btn"
-                                                data-index="<%= index %>">
-                                                <i class="bi bi-pencil"></i> Ubah Tempat
-                                            </button>
-                                        </td>
-                                        <td id="status-<%= index %>">
-                                            <%= item.statusPiket %>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-warning btn-sm edit-btn"
-                                                data-index="<%= index %>">
-                                                <i class="bi bi-pencil"></i> Validasi
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <% }); %>
-                                        <% } else { %>
-                                            <tr>
-                                                <td colspan="5" class="text-center">Tidak ada data piket</td>
-                                            </tr>
-                                            <% } %>
-                        </tbody>
-                    </table>
-                </main>
-        </div>
+                        <% }); %>
+                    <% } else { %>
+                        <tr>
+                            <td colspan="5" class="text-center">Tidak ada data piket</td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+            <button type="button" class="btn btn-success save-changes-btn" id="save-changes-btn">
+                <i class="bi bi-save"></i> Simpan Perubahan
+            </button>
+        </main>
+    </div>
 
-        <!-- Bootstrap JS and Popper.js -->
-        <script src="/js/jquery.min.js"></script>
-        <script src="/js/popper.min.js"></script>
-        <script src="/js/bootstrap.bundle.min.js"></script>
-        <script src="/js/manajemen-piket-sekarang.js"></script>
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/manajemen-piket-sekarang.js"></script>
 </body>
 
 </html>
