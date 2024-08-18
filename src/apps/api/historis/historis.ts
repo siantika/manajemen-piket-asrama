@@ -1,10 +1,9 @@
 import Joi from "joi";
-import CONST from "../../../config/consts";
-import PiketSekarang from "../../../models/piket-sekarang";
+import HistorisPiket from "../../../models/historis-piket";
 import { logger } from "../../../utils/logger";
 
 // Definisikan tipe untuk update parsial
-export type PiketSekarangUpdate = {
+export type HistorisPiketUpdate = {
   name?: string;
   tempat?: string;
   tanggalPiket?: Date;
@@ -23,10 +22,11 @@ const deleteSchema = Joi.object({
 });
 
 // Fungsi untuk menambah Piket
-export const createPiket = async (
+export const createPiketHistoris = async (
   name: string,
   tempatPiket: string,
-  tanggalPiket: Date
+  tanggalPiket: Date,
+  statusPiket: "belum" | "sudah",
 ) => {
   try {
     // Validasi data menggunakan skema Joi
@@ -35,24 +35,24 @@ export const createPiket = async (
       throw new Error(`Validation error: ${error.message}`);
     }
 
-    // Menambahkan PiketSekarang
-    const newPiket = await PiketSekarang.create({
+    // Menambahkan HistorisPiket
+    const newPiket = await HistorisPiket.create({
       nama: name,
       tempat: tempatPiket,
       tanggalPiket: tanggalPiket,
-      statusPiket: CONST.STATUS_PIKET.BELUM,
+      statusPiket: statusPiket,
     });
     return newPiket;
   } catch (error) {
-    logger.error("Error adding PiketSekarang: ", error);
-    throw new Error("Failed to add PiketSekarang");
+    logger.error("Error adding HistorisPiket: ", error);
+    throw new Error("Failed to add HistorisPiket");
   }
 };
 
 // Fungsi untuk membaca semua jadwal
-export const getAllPikets = async () => {
+export const getAllPiketHistoris = async () => {
   try {
-    const schedules = await PiketSekarang.findAll();
+    const schedules = await HistorisPiket.findAll();
     return schedules;
   } catch (error) {
     logger.error("Error reading all schedules: ", error);
@@ -61,33 +61,33 @@ export const getAllPikets = async () => {
 };
 
 // Fungsi untuk memperbarui jadwal
-export const updatePiket = async (id: number, updates: PiketSekarangUpdate) => {
+export const updatePiketHistoris = async (id: number, updates: HistorisPiketUpdate) => {
   try {
-    // Memperbarui PiketSekarang
-    const [affectedRows] = await PiketSekarang.update(updates, {
+    // Memperbarui HistorisPiket
+    const [affectedRows] = await HistorisPiket.update(updates, {
       where: { id },
     });
 
     if (affectedRows === 0) {
-      throw new Error("PiketSekarang not found");
+      throw new Error("HistorisPiket not found");
     }
 
     // Mengambil record yang diperbarui
-    const updatedPiketSekarang = await PiketSekarang.findByPk(id);
+    const updatedHistorisPiket = await HistorisPiket.findByPk(id);
 
-    if (!updatedPiketSekarang) {
-      throw new Error("PiketSekarang not found after update");
+    if (!updatedHistorisPiket) {
+      throw new Error("HistorisPiket not found after update");
     }
 
-    return updatedPiketSekarang;
+    return updatedHistorisPiket;
   } catch (error) {
-    logger.error("Error updating PiketSekarang: ", error);
-    throw new Error("Failed to update PiketSekarang");
+    logger.error("Error updating HistorisPiket: ", error);
+    throw new Error("Failed to update HistorisPiket");
   }
 };
 
 // Fungsi untuk menghapus Piket
-export const removePiket = async (id: number) => {
+export const removePiketHistoris = async (id: number) => {
   try {
     // Validasi ID menggunakan skema Joi
     const { error } = deleteSchema.validate({ id });
@@ -95,22 +95,22 @@ export const removePiket = async (id: number) => {
       throw new Error(`Validation error: ${error.message}`);
     }
 
-    // Menemukan dan menghapus PiketSekarang
-    const piketSekarang = await PiketSekarang.findByPk(id);
+    // Menemukan dan menghapus HistorisPiket
+    const piketSekarang = await HistorisPiket.findByPk(id);
     if (!piketSekarang) {
-      throw new Error("PiketSekarang not found");
+      throw new Error("HistorisPiket not found");
     }
     await piketSekarang.destroy();
     return piketSekarang;
   } catch (error) {
-    logger.error("Error deleting PiketSekarang: ", error);
-    throw new Error("PiketSekarang not found");
+    logger.error("Error deleting HistorisPiket: ", error);
+    throw new Error("HistorisPiket not found");
   }
 };
 
-export const removeAllPiket = async () => {
+export const removeAllPiketHistoris = async () => {
   try {
-    await PiketSekarang.destroy({
+    await HistorisPiket.destroy({
       truncate: true,
       restartIdentity: true,  
       cascade: false  

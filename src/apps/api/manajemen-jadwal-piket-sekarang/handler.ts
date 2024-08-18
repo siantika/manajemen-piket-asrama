@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import Joi from "joi";
-import { updatePiket } from "./piket-sekarang";
+import { removeAllPiket, updatePiket } from "./piket-sekarang";
 import { StatusCodes } from "http-status-codes";
 import { logger } from "../../../utils/logger";
 
@@ -37,13 +37,28 @@ export const updatePiketHandler = async (req: Request, res: Response) => {
       statusPiket: status,
       tempat: tempatPiket,
     });
-    
+
     return res.status(StatusCodes.OK).json({
       message: "Data updated successfully",
       data: updatedPiket,
     });
   } catch (error) {
     logger.error(`Error updating piket: ${error}`);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: "Internal Server Error",
+    });
+  }
+};
+
+export const deletePiketHandler = async (req: Request, res: Response) => {
+  try {
+    await removeAllPiket();
+    logger.info("Success remove all piket records");
+    return res.status(StatusCodes.NO_CONTENT).json({
+      message: "Successfully deleted all piket records",
+    });
+  } catch (error) {
+    logger.error(error);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       message: "Internal Server Error",
     });
