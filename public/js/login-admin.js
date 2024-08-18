@@ -1,5 +1,4 @@
-document
-  .getElementById("login-form")
+document.getElementById("login-form")
   .addEventListener("submit", async (event) => {
     event.preventDefault();
 
@@ -14,9 +13,8 @@ document
       });
 
       const result = await response.json();
-
       if (response.ok) {
-        localStorage.setItem('authToken', result.token)
+        localStorage.setItem("authToken", result.token);
         window.location.href = "/dashboard-admin";
       } else {
         document.getElementById("error-message").textContent =

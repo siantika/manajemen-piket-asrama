@@ -7,26 +7,15 @@ import { loginAdmin } from "./login";
 // Validasi skema
 const adminSchema = Joi.object({
   username: Joi.string().alphanum().min(3).max(30).required(),
-  password: Joi.string()
-    .pattern(
-      new RegExp(
-        "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$"
-      )
-    )
-    .required()
-    .messages({
-      "string.pattern.base":
-        "Password must be at least 6 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
-    }),
+  password: Joi.string().required(),
 });
 
 export const loginAdminHandler = async (req: Request, res: Response) => {
   const { error } = adminSchema.validate(req.body);
 
   if (error) {
-    logger.error(error);
     return res.status(StatusCodes.BAD_REQUEST).json({
-      message: "Invalid input",
+      message: "Invalid username or password",
     });
   }
 
@@ -34,9 +23,14 @@ export const loginAdminHandler = async (req: Request, res: Response) => {
 
   try {
     const response = await loginAdmin(username, password);
+    if (!response.success){
+      return res.status(StatusCodes.UNAUTHORIZED).json({
+        message: "Invalid credential",
+      });
+    }
     return res.status(StatusCodes.OK).json(
       {
-        message: response.message,
+        message: "login succeed",
         token:response.token,
       }
     );
