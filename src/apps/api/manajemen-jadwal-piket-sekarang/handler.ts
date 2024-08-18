@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import Joi from "joi";
-import { removeAllPiket, updatePiket } from "./piket-sekarang";
+import { getAllPikets, removeAllPiket, updatePiket } from "./piket-sekarang";
 import { StatusCodes } from "http-status-codes";
 import { logger } from "../../../utils/logger";
 
@@ -11,6 +11,22 @@ const updateSchema = Joi.object({
   tanggalPiket: Joi.date().optional(),
   status: Joi.string().valid("belum", "sudah").optional(),
 });
+
+
+export const readAllPiketHandlers = async (req: Request, res: Response) => {
+  try { 
+    const result = await getAllPikets();
+    return res.status(StatusCodes.OK).json({
+      message:"Data berhasil di baca",
+      data: result,
+    });
+  } catch (error) {
+    logger.error(`Gagal membaca daftar piket: ${error}`);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: "Failed to read all piket list"
+    });
+  }
+};
 
 export const updatePiketHandler = async (req: Request, res: Response) => {
   try {
