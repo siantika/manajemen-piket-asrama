@@ -1,6 +1,6 @@
 const CONST = {
   API_VERSION: process.env.API_VER || "/v1",
-  PORT: process.env.PORT || 3000,
+  PORT:  4000,
   ROLE: {
     ADMIN: "admin",
   },

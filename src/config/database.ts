@@ -7,6 +7,7 @@ const envPath = path.resolve(__dirname, "../../.env");
 dotenv.config({ path: envPath });
 
 const sequelize = new Sequelize({
+  dialectModule: require('pg'),
   dialect: "postgres",
   host: process.env.DB_HOST,
   username: process.env.DB_USER,
