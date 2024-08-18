@@ -1,26 +1,21 @@
 // dummy aja, belum real
 import { Request, Response } from "express";
+import { getAllPikets } from "../api/manajemen-jadwal-piket-sekarang/piket-sekarang";
 
-export interface Piket {
-  nama: string;
-  tempat: string;
-}
 
-export interface LihatDaftarPiket {
-  piketData: Piket[];
-  tanggalPiket: string;
-}
 
-const piketData = [
-  { nama: "Sian", tempat: "Dapur" },
-  { nama: "Arbi", tempat: "Kamar Mandi" },
-  { nama: "Yoga", tempat: "Tamu" },
-  { nama: "Agus", tempat: "Dapur" },
-];
+const piketData = async () => {
+  return await getAllPikets();
+};
 
-const tanggalPiket = "Minggu, 17 Juli 2024";
-
-export const renderHomePage = (req: Request, res: Response) => {
-  const data: LihatDaftarPiket = { piketData, tanggalPiket };
-  res.render("home", data);
+export const renderHomePage = async (req: Request, res: Response) => {
+  try {
+    const data = await piketData(); 
+    res.render("home", {
+      piketData: data, 
+    });
+  } catch (error) {
+    console.error('Error fetching piket data:', error);
+    res.status(500).send('Internal Server Error');
+  }
 };
