@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .sidebar {
+            background-color: #007bff;
+            min-height: 100vh;
+        }
+
+        .sidebar .nav-link {
+            color: #ffffff;
+        }
+
+        .sidebar .nav-link.active {
+            background-color: #0056b3;
+            color: #ffffff;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .navbar {
+            background-color: #0056b3;
+            color: #ffffff;
+        }
+
+        .navbar .navbar-brand,
+        .navbar .nav-link {
+            color: #ffffff;
+        }
+
+        .navbar .nav-link:hover {
+            color: #d1d1d1;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                margin-left: 0;
+            }
+
+            .sidebar {
+                min-height: auto;
+                padding-bottom: 10px;
+            }
+        }
+
+        .input-tempat {
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .change-place-btn {
+            margin-top: 10px;
+        }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+        }
+
+        .form-group label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .text-display {
+            font-weight: bold;
+            color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar Top -->
+    <%- include('navbar') %>
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <%- include('sidebar') %>
+
+        <!-- Content -->
+        <main class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <h1>Historis Piket</h1>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Tanggal Piket</th>
+                        <th>Nama</th>
+                        <th>Tempat</th>
+                        <th>Status Piket</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (piketHistoris && piketHistoris.length > 0) { %>
+                        <% piketHistoris.forEach(function(item, index) { %>
+                            <tr id="row-<%= index %>">
+                                <td><%= item.tanggalPiket %></td>
+                                <td><%= item.nama %></td>
+                                <td><%= item.tempat %></td>
+                                <td><%= item.statusPiket %></td>
+                            </tr>
+                        <% }); %>
+                    <% } else { %>
+                        <tr>
+                            <td colspan="5" class="text-center">Tidak ada data historis</td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </main>
+    </div>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src=""></script>
+</body>
+
+</html>

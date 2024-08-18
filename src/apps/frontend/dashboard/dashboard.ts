@@ -4,6 +4,7 @@ import { readAllPlaces } from "../../api/manajemen-piket/tempat";
 import path from "path";
 import { getAllPikets, updatePiket } from "../../api/manajemen-jadwal-piket-sekarang/piket-sekarang";
 import { getAvailablePlace } from "../../api/buat-jadwal/helpers";
+import { getAllPiketHistoris } from "../../api/historis/historis";
 
 export const renderDashboardAdmin = (req: Request, res: Response) => {
   res.render("dashboard-admin/main", { currentPage: "main" });
@@ -40,3 +41,15 @@ export const renderManajemenPiketSekarang = async (
     currentPage: "piket",
   });
 };
+
+export const renderManajemenHistoris = async(
+  req: Request,
+  res: Response
+) => {
+  const piketHistoris = await getAllPiketHistoris();
+  res.render("dashboard-admin/manajemen-historis", {
+    title: "Historis Piket",
+    currentPage: "historis-piket",
+    piketHistoris,
+  })
+}
