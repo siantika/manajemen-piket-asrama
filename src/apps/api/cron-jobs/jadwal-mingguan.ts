@@ -5,7 +5,6 @@ import {
 } from "../buat-jadwal/buat-jadwal";
 import { logger } from "../../../utils/logger";
 import CONST from "../../../config/consts";
-import { deleteAllRiwayatPiket } from "../buat-jadwal/helpers";
 import { createPiketHistoris } from "../historis/historis";
 import { getAllPikets, removeAllPiket } from "../manajemen-jadwal-piket-sekarang/piket-sekarang";
 
@@ -31,7 +30,7 @@ export const startCronjobs = () => {
   });
 
   // Cron job for weekly task
-  cron.schedule('59 23 * * 0', async () => {
+  cron.schedule(CONST.CRON_JOB.POST_SCHEDULE_TIME, async () => {
     try {
       logger.info("Cron job: Weekly task starting...");
       await savePiketHistoris();

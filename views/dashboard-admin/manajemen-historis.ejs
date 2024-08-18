@@ -57,28 +57,29 @@
             }
         }
 
-        .input-tempat {
-            margin-top: 10px;
-            width: 100%;
-        }
-
-        .change-place-btn {
-            margin-top: 10px;
-        }
-
-        .form-group {
-            display: flex;
-            align-items: center;
-        }
-
         .form-group label {
-            margin-right: 10px;
+            margin-bottom: 5px;
             font-weight: bold;
         }
 
-        .text-display {
-            font-weight: bold;
-            color: #0056b3;
+        .table {
+            margin-top: 20px;
+        }
+
+        .pagination {
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 576px) {
+            .form-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .form-group label {
+                margin-bottom: 5px;
+            }
         }
     </style>
 </head>
@@ -86,71 +87,73 @@
 <body>
     <!-- Navbar Top -->
     <%- include('navbar') %>
-        <div class="d-flex">
-            <!-- Sidebar -->
-            <%- include('sidebar') %>
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <%- include('sidebar') %>
 
-                <!-- Content -->
-                <!-- Content -->
-                <main class="col-md-9 ml-sm-auto col-lg-10 px-4">
-                    <h1>Historis Piket</h1>
+        <!-- Content -->
+        <main class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <h1>Historis Piket</h1>
 
-                    <!-- Filter Form -->
-                    <form id="filter-form">
-                        <div class="form-group">
-                            <label for="filter-nama">Nama:</label>
-                            <select id="filter-nama" class="form-control">
-                                <option value="">-- Select Nama --</option>
-                                <!-- Options will be populated by JavaScript -->
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="filter-tempat">Tempat:</label>
-                            <select id="filter-tempat" class="form-control">
-                                <option value="">-- Select Tempat --</option>
-                                <!-- Options will be populated by JavaScript -->
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="filter-status">Status Piket:</label>
-                            <select id="filter-status" class="form-control">
-                                <option value="">-- Select Status --</option>
-                                <!-- Options will be populated by JavaScript -->
-                            </select>
-                        </div>
-                        <button type="button" id="filter-btn" class="btn btn-primary">Filter</button>
-                    </form>
+            <!-- Filter Form -->
+            <form id="filter-form" class="mb-4">
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="filter-nama">Nama:</label>
+                        <select id="filter-nama" class="form-control">
+                            <option value="">-- Select Nama --</option>
+                            <!-- Options will be populated by JavaScript -->
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="filter-tempat">Tempat:</label>
+                        <select id="filter-tempat" class="form-control">
+                            <option value="">-- Select Tempat --</option>
+                            <!-- Options will be populated by JavaScript -->
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="filter-status">Status Piket:</label>
+                        <select id="filter-status" class="form-control">
+                            <option value="">-- Select Status --</option>
+                            <!-- Options will be populated by JavaScript -->
+                        </select>
+                    </div>
+                </div>
+                <button type="button" id="filter-btn" class="btn btn-primary btn-block">Filter</button>
+            </form>
 
-                    <!-- Data Table -->
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Tanggal Piket</th>
-                                <th>Nama</th>
-                                <th>Tempat</th>
-                                <th>Status Piket</th>
-                            </tr>
-                        </thead>
-                        <tbody id="data-table-body">
-                            <!-- Data will be populated here -->
-                        </tbody>
-                    </table>
+            <!-- Data Table -->
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Tanggal Piket</th>
+                        <th>Nama</th>
+                        <th>Tempat</th>
+                        <th>Status Piket</th>
+                    </tr>
+                </thead>
+                <tbody id="data-table-body">
+                    <!-- Data will be populated here -->
+                </tbody>
+            </table>
 
-                    <!-- Pagination Controls -->
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination" id="pagination-controls">
-                            <!-- Pagination buttons will be added here -->
-                        </ul>
-                    </nav>
-                </main>
+            <!-- Pagination Controls -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination" id="pagination-controls">
+                    <!-- Pagination buttons will be added here -->
+                </ul>
+            </nav>
+        </main>
+    </div>
 
-        </div>
-
-        <!-- Bootstrap JS and Popper.js -->
-        <script src="/js/jquery.min.js"></script>
-        <script src="/js/popper.min.js"></script>
-        <script src="/js/bootstrap.bundle.min.js"></script>
-        <script src="/js/historis.js"></script>
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/authorize.js"></script>
+    <script src="/js/historis.js"></script>
+    <script src="/js/logout.js"></script>
 </body>
 
 </html>

@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
+    authorize();
     const deleteButtons = document.querySelectorAll('.delete-btn');
     const editButtons = document.querySelectorAll('.edit-btn');
     const saveButtons = document.querySelectorAll('.save-btn');
@@ -27,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
 
                         const data = await response.json();
-                        alert(data.message);
+                        alert(`tempat: ${data.data.namaTempat} berhasil dihapus`);
                         location.reload(); // Refresh halaman setelah berhasil menghapus
                     } catch (error) {
                         console.error('Error:', error);

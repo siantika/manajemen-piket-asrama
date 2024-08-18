@@ -49,7 +49,7 @@ export const renderManajemenHistoris = async(
   const piketHistoris = await getAllPiketHistoris();
   res.render("dashboard-admin/manajemen-historis", {
     title: "Historis Piket",
-    currentPage: "historis-piket",
+    currentPage: "historis",
     piketHistoris,
   })
 }

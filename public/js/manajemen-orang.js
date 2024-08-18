@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
+    
+    authorize();
+    
     const deleteButtons = document.querySelectorAll('.delete-btn');
     const editButtons = document.querySelectorAll('.edit-btn');
     const saveButtons = document.querySelectorAll('.save-btn');
@@ -25,10 +28,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
 
                     const data = await response.json();
-                    alert(data.message);
-                    location.reload(); // Refresh halaman setelah berhasil menghapus
+                    alert(`Anggota dengan nama ${data.data.memberName} berhasil dihapus`);
+                    location.reload(); 
                 } catch (error) {
-                    console.error('Error:', error);
                     alert("Terjadi kesalahan saat mencoba menghapus anggota: " + error.message);
                 }
             }
@@ -81,7 +83,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     alert(`Gagal memperbarui nama: ${data.message}`);
                 }
             } catch (error) {
-                console.error('Error:', error);
                 alert("Terjadi kesalahan saat mencoba memperbarui nama.");
             }
         });
@@ -148,11 +149,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     const modal = bootstrap.Modal.getInstance(document.getElementById('addPersonModal'));
                     modal.hide();
                 } else {
-                    alert('Gagal menambah orang: ' + data.message);
+                    alert('Gagal menambah orang');
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
                 alert('Terjadi kesalahan saat menambah orang.');
             });
     });

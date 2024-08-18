@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
-    let tempData = {}; // Temporary storage for changes
+    authorize();
+    let tempData = {}; 
+    let hasUnsavedChanges = false;
 
     // Initialize validation buttons based on status
     document.querySelectorAll('.edit-btn').forEach(button => {
@@ -26,37 +28,51 @@ document.addEventListener("DOMContentLoaded", function () {
             const index = this.getAttribute('data-index');
             const tempatText = document.getElementById('tempat-' + index);
             const tempatDropdown = document.getElementById('dropdown-' + index);
-
+            const saveChangesBtn = document.getElementById('save-changes-btn');
+    
             if (tempatDropdown.classList.contains('d-none')) {
                 // Show dropdown and hide text
                 tempatText.classList.add('d-none');
                 tempatDropdown.classList.remove('d-none');
                 this.textContent = 'Simpan Tempat';
+    
+                tempatDropdown.addEventListener('change', () => {
+                    const selectedTempat = tempatDropdown.value;
+                    if (selectedTempat !== tempatText.textContent.trim()) {
+                        this.classList.add('btn-danger'); // Warna merah jika ada perubahan
+                        hasUnsavedChanges = true; // Ada perubahan yang belum disimpan
+                    } else {
+                        this.classList.remove('btn-danger'); // Kembali ke warna normal jika tidak ada perubahan
+                    }
+                });
+    
             } else {
-                // Change place and hide dropdown
                 const selectedTempat = tempatDropdown.value;
                 tempatText.textContent = selectedTempat;
                 tempatText.classList.remove('d-none');
                 tempatDropdown.classList.add('d-none');
                 this.textContent = 'Ubah Tempat';
-
-                // Save the change to tempData
+                this.classList.remove('btn-danger'); // Reset warna setelah menyimpan
+    
                 tempData[index] = {
                     tempat: selectedTempat,
                     id: button.dataset.id,
                     status: document.getElementById('status-' + index).textContent.trim()
                 };
-                console.log(`Temp data at index ${index}:`, tempData[index]);
+
+                alert(`Tempat berhasil diubah!`);
+                hasUnsavedChanges = true; // Ada perubahan yang belum disimpan
             }
         });
     });
-
+    
     // Event handler for validation button
     document.querySelectorAll('.edit-btn').forEach(button => {
         button.addEventListener('click', function() {
             const index = this.getAttribute('data-index');
             const statusCell = document.getElementById('status-' + index);
             const currentStatus = statusCell.textContent.trim();
+            const saveChangesBtn = document.getElementById('save-changes-btn');
 
             if (currentStatus === 'sudah') {
                 statusCell.textContent = 'belum';
@@ -79,14 +95,18 @@ document.addEventListener("DOMContentLoaded", function () {
                     status: statusCell.textContent.trim(),
                 };
             }
+
+            saveChangesBtn.classList.add('btn-danger');
+            hasUnsavedChanges = true; // Ada perubahan yang belum disimpan
         });
     });
 
     // Function to send data recursively
     async function sendData(index, dataToSend, authToken) {
         if (index >= dataToSend.length) {
-            alert('Semua perubahan berhasil disimpan');
-            location.reload();  // Optionally reload the page to see updates
+            alert('validasi berhasil');
+            hasUnsavedChanges = false; // Semua perubahan telah disimpan
+            location.reload(); 
             return;
         }
 
@@ -102,23 +122,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                console.error('Failed to save:', errorData);
-                alert('Gagal menyimpan data: ' + errorData.message);
-            } else {
-                console.log('Data berhasil dikirim:', dataToSend[index]);
+                alert('Gagal menyimpan data');
             }
         } catch (error) {
-            console.error('Error:', error);
             alert('Terjadi kesalahan saat menyimpan perubahan');
         }
 
-        // Rekursif ke data berikutnya
         sendData(index + 1, dataToSend, authToken);
     }
 
     // Event handler for saving changes
     document.getElementById('save-changes-btn').addEventListener('click', function() {
         const authToken = localStorage.getItem('authToken');
+        const saveChangesBtn = document.getElementById('save-changes-btn');
 
         const dataToSend = Object.keys(tempData).map(index => ({
             id: tempData[index].id,
@@ -126,6 +142,22 @@ document.addEventListener("DOMContentLoaded", function () {
             status: tempData[index].status,
         }));
 
-        sendData(0, dataToSend, authToken);  // Mulai dari data pertama
+        sendData(0, dataToSend, authToken).then(() => {
+            saveChangesBtn.classList.remove('btn-danger');
+            saveChangesBtn.classList.add('btn-success');
+        });
     });
+
+    // Event listener for beforeunload
+    window.addEventListener('beforeunload', function (e) {
+        if (hasUnsavedChanges) {
+            const confirmationMessage = 'Anda memiliki perubahan yang belum disimpan. Apakah Anda yakin ingin meninggalkan halaman ini?';
+    
+            // Standar cara modern untuk menampilkan peringatan sebelum unload
+            e.preventDefault();  // Ini hanya diperlukan untuk beberapa browser lama (tidak selalu diperlukan)
+            e.returnValue = ''; // Diperlukan untuk memastikan peringatan ditampilkan di beberapa browser
+            return confirmationMessage; // Beberapa browser memerlukan pengembalian nilai untuk menampilkan peringatan
+        }
+    });
+    
 });
