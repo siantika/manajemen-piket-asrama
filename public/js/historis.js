@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const filterNama = document.getElementById('filter-nama');
     const filterTempat = document.getElementById('filter-tempat');
     const filterStatus = document.getElementById('filter-status');
+    const filterStartDate = document.getElementById('filter-start-date');
+    const filterEndDate = document.getElementById('filter-end-date');
 
     let currentPage = 1;
     const itemsPerPage = 10;
@@ -71,12 +73,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const namaFilter = filterNama.value.toLowerCase();
         const tempatFilter = filterTempat.value.toLowerCase();
         const statusFilter = filterStatus.value.toLowerCase();
+        const startDate = filterStartDate.value ? new Date(filterStartDate.value) : null;
+        const endDate = filterEndDate.value ? new Date(filterEndDate.value) : null;
 
-        return data.filter(item =>
-            (!namaFilter || item.nama.toLowerCase().includes(namaFilter)) &&
-            (!tempatFilter || item.tempat.toLowerCase().includes(tempatFilter)) &&
-            (!statusFilter || item.statusPiket.toLowerCase().includes(statusFilter))
-        );
+        return data.filter(item => {
+            const itemDate = new Date(item.tanggalPiket);
+            return (!namaFilter || item.nama.toLowerCase().includes(namaFilter)) &&
+                (!tempatFilter || item.tempat.toLowerCase().includes(tempatFilter)) &&
+                (!statusFilter || item.statusPiket.toLowerCase().includes(statusFilter)) &&
+                (!startDate || itemDate >= startDate) &&
+                (!endDate || itemDate <= endDate);
+        });
     }
 
     function populateFilters(data) {
