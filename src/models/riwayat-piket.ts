@@ -26,18 +26,18 @@ RiwayatPiket.init(
   {
     piketId: {
       type: DataTypes.UUID,
-      field: "piketid",
+      field: "piket_id",
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
     tempatId: {
       type: DataTypes.UUID,
-      field: "tempatid",
+      field: "tempat_id",
       allowNull: false,
     },
     penghuniId: {
       type: DataTypes.UUID,
-      field: "penghuniid",
+      field: "penghuni_id",
       allowNull: false,
     },
     statusPiket: {
@@ -47,7 +47,7 @@ RiwayatPiket.init(
     },
     tanggalPiket: {
       type: DataTypes.DATE,
-      field: "tanggalpiket",
+      field: "tanggal_piket",
       allowNull: false,
     },
   },
