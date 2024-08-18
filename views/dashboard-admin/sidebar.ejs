@@ -3,6 +3,11 @@
     <h4 class="text-white">Menu</h4>
     <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item">
+            <a href="/dashboard-admin" class="nav-link <%= currentPage === 'main' ? 'active' : '' %>" aria-current="<%= currentPage === 'main' ? 'page' : '' %>">
+                Main Dashboard
+            </a>
+        </li>
+        <li>
             <a href="/manajemen-piket" class="nav-link <%= currentPage === 'piket' ? 'active' : '' %>" aria-current="<%= currentPage === 'piket' ? 'page' : '' %>">
                 Manajemen Piket
             </a>
