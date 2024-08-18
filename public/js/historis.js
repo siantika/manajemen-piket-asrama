@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+    authorize();
+    
     const tableBody = document.getElementById('data-table-body');
     const paginationControls = document.getElementById('pagination-controls');
     const filterNama = document.getElementById('filter-nama');

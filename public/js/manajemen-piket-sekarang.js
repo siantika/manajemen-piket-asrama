@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
+    
+    authorize();
     let tempData = {}; // Temporary storage for changes
 
     // Initialize validation buttons based on status

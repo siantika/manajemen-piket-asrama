@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
+    
+    authorize();
+    
     const deleteButtons = document.querySelectorAll('.delete-btn');
     const editButtons = document.querySelectorAll('.edit-btn');
     const saveButtons = document.querySelectorAll('.save-btn');
