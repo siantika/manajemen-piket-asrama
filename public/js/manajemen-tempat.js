@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
 
                         const data = await response.json();
-                        alert(data.message);
+                        alert(`tempat: ${data.data.namaTempat} berhasil dihapus`);
                         location.reload(); // Refresh halaman setelah berhasil menghapus
                     } catch (error) {
                         console.error('Error:', error);
