@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const currentStatus = statusCell.textContent.trim();
 
             if (currentStatus === 'sudah') {
-                statusCell.textContent = 'Belum';
+                statusCell.textContent = 'belum';
                 button.classList.remove('btn-success');
                 button.classList.add('btn-warning');
                 button.innerHTML = '<i class="bi bi-pencil"></i> Validasi';
