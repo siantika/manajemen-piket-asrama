@@ -31,22 +31,22 @@ export const savePiketHistoris = async () => {
 
 export const generateScheduleTask = async () => {
   try {
-    logger.info("Cron job: Generating schedule...");
+    logger.info("Generating schedule...");
     const jadwalPiket = await generateScheduleNow();
     await saveGeneratedPiketNow(jadwalPiket);
-    logger.info("Cron job: Generating schedule completed successfully.");
+    logger.info("Generating schedule completed successfully.");
   } catch (error) {
-    logger.error(`Cron job: Generating schedule failed. Error message: ${error}`);
+    logger.error(`Generating schedule failed. Error message: ${error}`);
   }
 }
 
 export const recapResultTask = async () => {
   try {
-    logger.info("Cron job: Weekly task starting...");
+    logger.info("Weekly task starting...");
     await savePiketHistoris();
     await removeAllPiket();
-    logger.info("Cron job: Weekly task completed successfully.");
+    logger.info("Weekly task completed successfully.");
   } catch (error) {
-    logger.error(`Cron job: Weekly task failed. Error message: ${error}`);
+    logger.error(`Weekly task failed. Error message: ${error}`);
   }
 }
