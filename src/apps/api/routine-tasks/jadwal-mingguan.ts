@@ -16,31 +16,6 @@ type RiwayatPiket = {
   statusPiket: "belum" | "sudah";
 };
 
-export const startCronjobs = () => {
-  // Cron job for generating schedule
-  cron.schedule(CONST.CRON_JOB.GENERATE_SCHEDULE_TIME, async () => {
-    try {
-      logger.info("Cron job: Generating schedule...");
-      const jadwalPiket = await generateScheduleNow();
-      await saveGeneratedPiketNow(jadwalPiket);
-      logger.info("Cron job: Generating schedule completed successfully.");
-    } catch (error) {
-      logger.error(`Cron job: Generating schedule failed. Error message: ${error}`);
-    }
-  });
-
-  // Cron job for weekly task
-  cron.schedule(CONST.CRON_JOB.POST_SCHEDULE_TIME, async () => {
-    try {
-      logger.info("Cron job: Weekly task starting...");
-      await savePiketHistoris();
-      await removeAllPiket();
-      logger.info("Cron job: Weekly task completed successfully.");
-    } catch (error) {
-      logger.error(`Cron job: Weekly task failed. Error message: ${error}`);
-    }
-  });
-};
 
 export const savePiketHistoris = async () => {
   try {
@@ -53,3 +28,25 @@ export const savePiketHistoris = async () => {
     logger.error(`Failed to process riwayat piket. Error message: ${error}`);
   }
 };
+
+export const generateScheduleTask = async () => {
+  try {
+    logger.info("Cron job: Generating schedule...");
+    const jadwalPiket = await generateScheduleNow();
+    await saveGeneratedPiketNow(jadwalPiket);
+    logger.info("Cron job: Generating schedule completed successfully.");
+  } catch (error) {
+    logger.error(`Cron job: Generating schedule failed. Error message: ${error}`);
+  }
+}
+
+export const recapResultTask = async () => {
+  try {
+    logger.info("Cron job: Weekly task starting...");
+    await savePiketHistoris();
+    await removeAllPiket();
+    logger.info("Cron job: Weekly task completed successfully.");
+  } catch (error) {
+    logger.error(`Cron job: Weekly task failed. Error message: ${error}`);
+  }
+}
