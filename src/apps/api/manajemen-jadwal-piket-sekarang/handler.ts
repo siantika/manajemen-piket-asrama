@@ -3,6 +3,8 @@ import Joi from "joi";
 import { getAllPikets, removeAllPiket, updatePiket } from "./piket-sekarang";
 import { StatusCodes } from "http-status-codes";
 import { logger } from "../../../utils/logger";
+import { generateScheduleNow } from "../buat-jadwal/buat-jadwal";
+import { generateScheduleTask } from "../cron-jobs/jadwal-mingguan";
 
 const updateSchema = Joi.object({
   id: Joi.number().integer().positive().required(),
@@ -78,5 +80,19 @@ export const deletePiketHandler = async (req: Request, res: Response) => {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       message: "Internal Server Error",
     });
+  }
+};
+
+export const generateSchedulerHandler = async (req: Request, res: Response) => {
+  try {
+    await generateScheduleTask();
+    return res.status(StatusCodes.OK).json({
+      message:"Generate-schedule task successfully executed",
+    });
+  } catch (error) {
+    logger.error(`Failed to run generate-schedule task with error: ${error}`);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message:"Internal Server Error",
+    })
   }
 };
