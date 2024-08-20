@@ -17,7 +17,7 @@ import {
 } from "./helpers";
 import { IGeneratedSchedule, IRekapPiket } from "./interfaces";
 
-const generateSchedule = async (): Promise<IGeneratedSchedule[]> => {
+const generateSchedule = async (tanggalPiket:Date): Promise<IGeneratedSchedule[]> => {
   try {
     const members = await getMembers();
     const tempat = await getTempat();
@@ -49,13 +49,14 @@ const generateSchedule = async (): Promise<IGeneratedSchedule[]> => {
           createScheduleEntry(
             member,
             availablePlace.tempatId,
-            availablePlace.namaTempat
+            availablePlace.namaTempat,
+            tanggalPiket
           )
         );
       } else {
         // Assign default place if no available place found
         schedule.push(
-          createScheduleEntry(member, defaultPlaceId, defaultPlace)
+          createScheduleEntry(member, defaultPlaceId, defaultPlace, tanggalPiket)
         );
       }
     }
@@ -68,8 +69,8 @@ const generateSchedule = async (): Promise<IGeneratedSchedule[]> => {
   }
 };
 
-export const generateScheduleNow = async (): Promise<IGeneratedSchedule[]> => {
-  const generatedSchedule = await generateSchedule();
+export const generateScheduleNow = async (tanggalPiket:Date): Promise<IGeneratedSchedule[]> => {
+  const generatedSchedule = await generateSchedule(tanggalPiket);
   const generatedPlaces = getPlacesFromSchedule(generatedSchedule);
   const importantPlaces = await getImportantPlaces();
 

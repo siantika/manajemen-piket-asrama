@@ -137,13 +137,27 @@
                     <% } %>
                 </tbody>
             </table>
-            <div class="d-flex justify-content-end">
-                <button type="button" class="btn btn-success save-changes-btn" id="save-changes-btn">
-                    <i class="bi bi-save"></i> Proses Validasi
-                </button>
+            <div class="row">
+                <div  class="col-12 col-md-4 d-flex justify-content-center mb-3 mb-md-0">
+                    <button id="buatJadwalBtn" class="btn btn-primary w-100">Buat Jadwal</button>
+                </div>
+                <div class="col-12 col-md-4 d-flex justify-content-center mb-3 mb-md-0">
+                    <button id="rekapBtn" class="btn btn-secondary w-100">Rekap</button>
+                </div>
+                <div class="col-12 col-md-4 d-flex justify-content-center">
+                    <button id="validasiAllBtn" class="btn btn-success w-100">Lakukan Validasi</button>
+                </div>
             </div>
+                    <!-- Date Picker (initially hidden) -->
+        <div id="datePickerContainer" class="mt-3 d-none">
+            <label for="scheduleDate">Pilih Tanggal:</label>
+            <input type="date" id="scheduleDate" class="form-control">
+            <button id="submitDateBtn" class="btn btn-primary mt-2">Submit Tanggal</button>
+        </div>
         </main>
     </div>
+
+
 
     <!-- Bootstrap JS and Popper.js -->
     <script src="/js/jquery.min.js"></script>

@@ -83,7 +83,8 @@ export const getAvailablePlace = (
 export const createScheduleEntry = (
   member: Member,
   placeId: string,
-  place: string
+  place: string,
+  tanggal: Date
 ): IGeneratedSchedule => {
   return {
     memberId: member.memberId,
@@ -91,7 +92,7 @@ export const createScheduleEntry = (
     placeId,
     place,
     statusPiket: CONST.STATUS_PIKET.BELUM,
-    tanggalPiket: new Date(),
+    tanggalPiket: tanggal,
   };
 };
 
