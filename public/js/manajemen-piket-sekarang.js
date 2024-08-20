@@ -3,6 +3,16 @@ document.addEventListener("DOMContentLoaded", function () {
     let tempData = {};
     let hasUnsavedChanges = false;
 
+    const saveChangesBtn = document.getElementById('validasiAllBtn');
+    const rekapBtn = document.getElementById('rekapBtn');
+    rekapBtn.disabled = true; // Disable rekap button by default
+
+    // Check if there is any data in the list and enable rekapBtn
+    const dataList = document.querySelectorAll('.edit-btn').length;
+    if (dataList > 0) {
+        rekapBtn.disabled = false; // Enable button if data exists
+    }
+
     // Initialize validation buttons based on status
     document.querySelectorAll('.edit-btn').forEach(button => {
         const index = button.getAttribute('data-index');
@@ -22,58 +32,25 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Event listener for the "Rekap" button
-    document.getElementById('rekapBtn').addEventListener('click', function () {
-        const authToken = localStorage.getItem('authToken');
-        fetch('/v1/recap-task', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${authToken}`,
-                'Content-Type': 'application/json',
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            alert('Rekap berhasil dilakukan');
-            console.log(data); // Optional: log data for debugging
-        })
-        .catch(error => {
-            alert('Gagal membuat rekap!');
-            console.error('Error:', error); // Log error for debugging
-        });
-    });
-
     // Event handler for changing place
     document.querySelectorAll('.change-place-btn').forEach(button => {
         button.addEventListener('click', function () {
             const index = this.getAttribute('data-index');
             const tempatText = document.getElementById('tempat-' + index);
             const tempatDropdown = document.getElementById('dropdown-' + index);
-            const saveChangesBtn = document.getElementById('validasiAllBtn');
 
             if (tempatDropdown.classList.contains('d-none')) {
                 // Show dropdown and hide text
                 tempatText.classList.add('d-none');
                 tempatDropdown.classList.remove('d-none');
                 this.textContent = 'Simpan Tempat';
-
-                tempatDropdown.addEventListener('change', () => {
-                    const selectedTempat = tempatDropdown.value;
-                    if (selectedTempat !== tempatText.textContent.trim()) {
-                        this.classList.add('btn-danger'); // Mark as unsaved
-                        hasUnsavedChanges = true; // Mark as having unsaved changes
-                    } else {
-                        this.classList.remove('btn-danger'); // Unmark if no changes
-                    }
-                });
-
             } else {
+                // Save selected place and switch back to text view
                 const selectedTempat = tempatDropdown.value;
                 tempatText.textContent = selectedTempat;
                 tempatText.classList.remove('d-none');
                 tempatDropdown.classList.add('d-none');
                 this.textContent = 'Ubah Tempat';
-                this.classList.remove('btn-danger'); // Reset color after save
 
                 tempData[index] = {
                     tempat: selectedTempat,
@@ -83,8 +60,45 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 alert(`Tempat berhasil diubah!`);
                 hasUnsavedChanges = true; // Mark as having unsaved changes
+                saveChangesBtn.disabled = false; // Enable the validation button
             }
         });
+    });
+
+    // Event listener for the "Rekap" button
+    rekapBtn.addEventListener('click', function () {
+        if (!rekapBtn.disabled) {
+            const authToken = localStorage.getItem('authToken');
+            if (!authToken) {
+                alert('Auth token tidak ditemukan. Anda mungkin belum login.');
+                return;
+            }
+
+            rekapBtn.disabled = true; // Disable the button to prevent multiple clicks
+            fetch('/v1/recap-task', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${authToken}`,
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Jaringan atau server bermasalah');
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert('Rekap berhasil dilakukan');
+            })
+            .catch(error => {
+                alert('Gagal membuat rekap! Periksa konsol untuk detail.');
+            })
+            .finally(() => {
+                rekapBtn.disabled = false; // Re-enable the button after the process completes
+                location.reload(); // Reload page to reflect updates
+            });
+        }
     });
 
     // Event handler for validation buttons
@@ -93,7 +107,6 @@ document.addEventListener("DOMContentLoaded", function () {
             const index = this.getAttribute('data-index');
             const statusCell = document.getElementById('status-' + index);
             const currentStatus = statusCell.textContent.trim();
-            const saveChangesBtn = document.getElementById('validasiAllBtn');
 
             if (currentStatus === 'sudah') {
                 statusCell.textContent = 'belum';
@@ -113,15 +126,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 status: statusCell.textContent.trim(),
             };
 
-            saveChangesBtn.classList.add('btn-danger');
             hasUnsavedChanges = true; // Mark as having unsaved changes
+            saveChangesBtn.disabled = false; // Enable the button since there's a change
+            saveChangesBtn.classList.add('btn-danger');
         });
     });
 
     // Function to send data recursively
     async function sendData(index, dataToSend, authToken) {
         if (index >= dataToSend.length) {
-            alert('Validasi berhasil');
+            alert('Semua validasi berhasil disimpan');
             hasUnsavedChanges = false; // All changes saved
             location.reload();
             return;
@@ -151,9 +165,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Event handler for saving changes
-    document.getElementById('validasiAllBtn').addEventListener('click', function () {
+    saveChangesBtn.addEventListener('click', function () {
         const authToken = localStorage.getItem('authToken');
-        const saveChangesBtn = document.getElementById('validasiAllBtn');
 
         const dataToSend = Object.keys(tempData).map(index => ({
             id: tempData[index].id,
@@ -164,6 +177,8 @@ document.addEventListener("DOMContentLoaded", function () {
         sendData(0, dataToSend, authToken).then(() => {
             saveChangesBtn.classList.remove('btn-danger');
             saveChangesBtn.classList.add('btn-success');
+            saveChangesBtn.disabled = true; // Disable button after saving
+            hasUnsavedChanges = false; // Reset unsaved changes flag
         });
     });
 
@@ -215,11 +230,10 @@ function initializeDatePickerAndSchedule(apiEndpoint, authToken) {
             .then(response => response.json())
             .then(data => {
                 alert('Jadwal berhasil dibuat');
-                console.log(data); // Optional: log data for debugging
+                location.reload();
             })
             .catch(error => {
                 alert('Gagal membuat jadwal!');
-                console.error('Error:', error); // Log error for debugging
             });
         } else {
             alert('Silakan pilih tanggal terlebih dahulu.');
