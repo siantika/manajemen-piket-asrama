@@ -10,7 +10,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "build-vercel": "npm run build"
+    "build-vercel": "echo hello"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
