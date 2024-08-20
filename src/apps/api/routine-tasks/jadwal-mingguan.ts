@@ -29,10 +29,10 @@ export const savePiketHistoris = async () => {
   }
 };
 
-export const generateScheduleTask = async () => {
+export const generateScheduleTask = async (tanggalPiket:Date) => {
   try {
     logger.info("Generating schedule...");
-    const jadwalPiket = await generateScheduleNow();
+    const jadwalPiket = await generateScheduleNow(tanggalPiket);
     await saveGeneratedPiketNow(jadwalPiket);
     logger.info("Generating schedule completed successfully.");
   } catch (error) {

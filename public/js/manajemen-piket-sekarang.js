@@ -224,7 +224,7 @@ function initializeDatePickerAndSchedule(apiEndpoint, authToken) {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    tanggal: selectedDate
+                    tanggalPiket: selectedDate
                 })
             })
             .then(response => response.json())
