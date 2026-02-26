@@ -6,69 +6,20 @@
     <title>Admin Dashboard</title>
     <!-- Bootstrap CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet" />
-    <style>
-      /* Style tambahan untuk dashboard */
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f8f9fa;
-      }
-
-      .sidebar {
-        background-color: #007bff;
-        min-height: 100vh;
-      }
-
-      .sidebar .nav-link {
-        color: #ffffff;
-      }
-
-      .sidebar .nav-link.active {
-        background-color: #0056b3;
-        color: #ffffff;
-      }
-
-      .content {
-        margin-left: 250px;
-        padding: 20px;
-      }
-
-      .navbar {
-        background-color: #0056b3;
-        color: #ffffff;
-      }
-
-      .navbar .navbar-brand,
-      .navbar .nav-link {
-        color: #ffffff;
-      }
-
-      .navbar .nav-link:hover {
-        color: #d1d1d1;
-      }
-
-      @media (max-width: 768px) {
-        .content {
-          margin-left: 0;
-        }
-
-        .sidebar {
-          min-height: auto;
-          padding-bottom: 10px;
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="/css/style.css" />
   </head>
 
-  <body>
+  <body class="admin-body">
     <!-- Navbar Top -->
     <%- include('navbar') %>
 
-    <div class="d-flex">
+    <div class="admin-layout">
       <!-- Sidebar -->
       <%- include('sidebar') %>
       
       <!-- Content -->
-      <div class="container mt-4">
+      <div class="admin-content">
+        <div class="admin-page-card">
         <h1 class="mb-4"><%= title %></h1>
         <table class="table table-striped">
             <thead>
@@ -107,6 +58,7 @@
         <a href="#" class="btn btn-success mt-3" data-bs-toggle="modal" data-bs-target="#addPersonModal">
           <i class="bi bi-person-plus"></i> Tambah Orang
         </a>
+      </div>
     </div>
     
      <!-- Modal Tambah Orang -->
@@ -142,7 +94,7 @@
     <script src="/js/popper.min.js"></script>
     <script src="/js/bootstrap.bundle.min.js"></script>
     <script src="/js/authorize.js"></script>
-    <script src="/js/manajemen-orang.js"></script> </script>
+    <script src="/js/manajemen-orang.js"></script>
     <script src="/js/logout.js"></script>
   </body>
 </html>

@@ -6,87 +6,39 @@
     <title>Admin Dashboard</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        /* Style tambahan untuk dashboard */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-        }
-
-        .sidebar {
-            background-color: #007bff;
-            min-height: 100vh;
-        }
-
-        .sidebar .nav-link {
-            color: #ffffff;
-        }
-
-        .sidebar .nav-link.active {
-            background-color: #0056b3;
-            color: #ffffff;
-        }
-
-        .content {
-            margin-left: 0;
-            padding: 20px;
-        }
-
-        .navbar {
-            background-color: #0056b3;
-            color: #ffffff;
-        }
-
-        .navbar .navbar-brand,
-        .navbar .nav-link {
-            color: #ffffff;
-        }
-
-        .navbar .nav-link:hover {
-            color: #d1d1d1;
-        }
-
-        @media (max-width: 768px) {
-            .content {
-                margin-left: 0;
-            }
-
-            .sidebar {
-                min-height: auto;
-                padding-bottom: 10px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="/css/style.css" />
 </head>
-<body>
+<body class="admin-body">
 
 <!-- Navbar Top -->
 <%- include('navbar') %>
 
-<div class="d-flex">
+<div class="admin-layout">
 <!-- sidebar -->
  <%- include('sidebar') %>
 
     <!-- Content -->
-    <div class="content">
-        <h1>Selamat Datang di Dashboard Admin</h1>
-        <p>Pilih salah satu menu di sidebar untuk mengelola data.</p>
-        <hr>
-        <h2>Cara Kerja Sistem:</h2>
-        <ol>
-            <li>
-                <strong>Penjadwalan Piket:</strong><br>
-                Admin membuat dan mempublikasikan jadwal piket terbaru melalui menu <strong>Manajemen Piket > Buat Jadwal (tombol)</strong>. 
-            </li>
-            <li>
-                <strong>Manajemen Piket dan Data:</strong><br>
-                Admin memiliki kontrol penuh atas manajemen piket, yang mencakup perubahan lokasi piket dan validasi status piket (sudah dilakukan atau belum). Selain itu, admin dapat mengelola data tempat dengan menambah, mengubah, atau menghapus tempat yang ada, serta menentukan status tempat tersebut (piket individu atau bersama). Manajemen orang juga bekerja dengan cara yang sama seperti manajemen tempat, memberikan fleksibilitas dalam pengaturan dan distribusi tugas piket. Admin juga dapat memantau histori piket untuk melihat rekam jejak kegiatan yang telah dilaksanakan.
-            </li>
-            <li>
-                <strong>Rekap Piket:</strong><br>
-                Setiap <strong>Akhir Piket</strong>, Admin melakukan  rekap piket pada menu <strong> Manajemen Piket > Rekap </strong>. Hal ini akan merekap seluruh data piket ke menu <strong>Historis Piket</strong> dan menghapus Jadwal Piket yang sudah lewat.
-            </li>
-        </ol>
+    <div class="admin-content">
+        <div class="admin-page-card">
+            <h1>Selamat Datang di Dashboard Admin</h1>
+            <p>Pilih salah satu menu di sidebar untuk mengelola data.</p>
+            <hr>
+            <h2>Cara Kerja Sistem:</h2>
+            <ol>
+                <li>
+                    <strong>Penjadwalan Piket:</strong><br>
+                    Admin membuat dan mempublikasikan jadwal piket terbaru melalui menu <strong>Manajemen Piket > Buat Jadwal (tombol)</strong>. 
+                </li>
+                <li>
+                    <strong>Manajemen Piket dan Data:</strong><br>
+                    Admin memiliki kontrol penuh atas manajemen piket, yang mencakup perubahan lokasi piket dan validasi status piket (sudah dilakukan atau belum). Selain itu, admin dapat mengelola data tempat dengan menambah, mengubah, atau menghapus tempat yang ada, serta menentukan status tempat tersebut (piket individu atau bersama). Manajemen orang juga bekerja dengan cara yang sama seperti manajemen tempat, memberikan fleksibilitas dalam pengaturan dan distribusi tugas piket. Admin juga dapat memantau histori piket untuk melihat rekam jejak kegiatan yang telah dilaksanakan.
+                </li>
+                <li>
+                    <strong>Rekap Piket:</strong><br>
+                    Setiap <strong>Akhir Piket</strong>, Admin melakukan  rekap piket pada menu <strong> Manajemen Piket > Rekap </strong>. Hal ini akan merekap seluruh data piket ke menu <strong>Historis Piket</strong> dan menghapus Jadwal Piket yang sudah lewat.
+                </li>
+            </ol>
+        </div>
     </div>
     
 </div>

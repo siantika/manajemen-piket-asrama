@@ -7,91 +7,19 @@
     <title>Admin Dashboard</title>
     <!-- Bootstrap CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet" />
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-        }
-
-        .sidebar {
-            background-color: #007bff;
-            min-height: 100vh;
-        }
-
-        .sidebar .nav-link {
-            color: #ffffff;
-        }
-
-        .sidebar .nav-link.active {
-            background-color: #0056b3;
-            color: #ffffff;
-        }
-
-        .content {
-            margin-left: 250px;
-            padding: 20px;
-        }
-
-        .navbar {
-            background-color: #0056b3;
-            color: #ffffff;
-        }
-
-        .navbar .navbar-brand,
-        .navbar .nav-link {
-            color: #ffffff;
-        }
-
-        .navbar .nav-link:hover {
-            color: #d1d1d1;
-        }
-
-        @media (max-width: 768px) {
-            .content {
-                margin-left: 0;
-            }
-
-            .sidebar {
-                min-height: auto;
-                padding-bottom: 10px;
-            }
-        }
-
-        .input-tempat {
-            margin-top: 10px;
-            width: 100%;
-        }
-
-        .change-place-btn {
-            margin-top: 10px;
-        }
-
-        .form-group {
-            display: flex;
-            align-items: center;
-        }
-
-        .form-group label {
-            margin-right: 10px;
-            font-weight: bold;
-        }
-
-        .text-display {
-            font-weight: bold;
-            color: #0056b3;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/style.css" />
 </head>
 
-<body>
+<body class="admin-body">
     <!-- Navbar Top -->
     <%- include('navbar') %>
-    <div class="d-flex">
+    <div class="admin-layout">
         <!-- Sidebar -->
         <%- include('sidebar') %>
 
         <!-- Content -->
-        <main class="col-md-9 ml-sm-auto col-lg-10 px-4">
+        <main class="admin-content">
+            <div class="admin-page-card">
             <h1>Manajemen Piket</h1>
             <table class="table table-striped">
                 <thead>
@@ -153,6 +81,7 @@
             <label for="scheduleDate">Pilih Tanggal:</label>
             <input type="date" id="scheduleDate" class="form-control">
             <button id="submitDateBtn" class="btn btn-primary mt-2">Submit Tanggal</button>
+        </div>
         </div>
         </main>
     </div>
