@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { deletePiketHandler, generateSchedulerHandler, readAllPiketHandlers, recapResultHandler, updatePiketHandler } from "./handler";
 import { auth } from "../../../middlewares/auth";
+import { deletePiketHandler, generateSchedulerHandler, readAllPiketHandlers, recapResultHandler, updatePiketHandler } from "./handler";
 
 const router = Router();
 
-router.get("/piket-sekarang", readAllPiketHandlers);
+router.get("/piket-sekarang", auth, readAllPiketHandlers);
 router.post("/generate-schedule-task", auth, generateSchedulerHandler);
 router.post("/recap-task", auth, recapResultHandler);
 router.put("/update/piket-sekarang", auth, updatePiketHandler);

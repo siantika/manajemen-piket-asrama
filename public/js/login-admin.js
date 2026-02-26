@@ -14,7 +14,6 @@ document.getElementById("login-form")
 
       const result = await response.json();
       if (response.ok) {
-        localStorage.setItem("authToken", result.token);
         window.location.href = "/dashboard-admin";
       } else {
         document.getElementById("error-message").textContent =

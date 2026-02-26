@@ -4,7 +4,8 @@
   "description": "Manajemen piket asrama Otten",
   "main": "dist/server.js",
   "scripts": {
-    "start": "nodemon --exec ts-node-dev src/server.ts",
+    "dev": "nodemon --exec ts-node src/server.ts",
+    "start": "npm run dev",
     "build": "tsc",
     "start:prod": "node dist/server.js",
     "test": "jest",
@@ -29,6 +30,7 @@
     "joi": "^17.13.3",
     "jquery": "^3.7.1",
     "jsonwebtoken": "^9.0.2",
+    "mongoose": "^9.2.2",
     "morgan": "^1.10.0",
     "node-cron": "^3.0.3",
     "pg": "^8.12.0",
@@ -61,5 +63,3 @@
     "node": ">=14.0.0"
   }
 }
-
-

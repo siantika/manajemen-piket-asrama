@@ -68,17 +68,10 @@ document.addEventListener("DOMContentLoaded", function () {
     // Event listener for the "Rekap" button
     rekapBtn.addEventListener('click', function () {
         if (!rekapBtn.disabled) {
-            const authToken = localStorage.getItem('authToken');
-            if (!authToken) {
-                alert('Auth token tidak ditemukan. Anda mungkin belum login.');
-                return;
-            }
-
             rekapBtn.disabled = true; // Disable the button to prevent multiple clicks
             fetch('/v1/recap-task', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${authToken}`,
                     'Content-Type': 'application/json',
                 }
             })
@@ -133,7 +126,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Function to send data recursively
-    async function sendData(index, dataToSend, authToken) {
+    async function sendData(index, dataToSend) {
         if (index >= dataToSend.length) {
             alert('Semua validasi berhasil disimpan');
             hasUnsavedChanges = false; // All changes saved
@@ -145,7 +138,6 @@ document.addEventListener("DOMContentLoaded", function () {
             const response = await fetch('/v1/update/piket-sekarang', {
                 method: 'PUT',
                 headers: {
-                    'Authorization': `Bearer ${authToken}`,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(dataToSend[index])
@@ -161,20 +153,18 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error('Error:', error); // Log error for debugging
         }
 
-        sendData(index + 1, dataToSend, authToken);
+        sendData(index + 1, dataToSend);
     }
 
     // Event handler for saving changes
     saveChangesBtn.addEventListener('click', function () {
-        const authToken = localStorage.getItem('authToken');
-
         const dataToSend = Object.keys(tempData).map(index => ({
             id: tempData[index].id,
             tempatPiket: tempData[index].tempat,
             status: tempData[index].status,
         }));
 
-        sendData(0, dataToSend, authToken).then(() => {
+        sendData(0, dataToSend).then(() => {
             saveChangesBtn.classList.remove('btn-danger');
             saveChangesBtn.classList.add('btn-success');
             saveChangesBtn.disabled = true; // Disable button after saving
@@ -194,11 +184,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Initialize date picker and schedule creation
-    initializeDatePickerAndSchedule('/v1/generate-schedule-task', localStorage.getItem('authToken'));
+    initializeDatePickerAndSchedule('/v1/generate-schedule-task');
 });
 
 // Function to initialize the date picker and handle schedule creation
-function initializeDatePickerAndSchedule(apiEndpoint, authToken) {
+function initializeDatePickerAndSchedule(apiEndpoint) {
     const buatJdwlBtn = document.getElementById('buatJadwalBtn');
     const datePickerContainer = document.getElementById('datePickerContainer');
     const submitDateBtn = document.getElementById('submitDateBtn');
@@ -220,7 +210,6 @@ function initializeDatePickerAndSchedule(apiEndpoint, authToken) {
             fetch(apiEndpoint, {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${authToken}`,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({

@@ -10,14 +10,12 @@ document.addEventListener("DOMContentLoaded", function () {
         button.addEventListener('click', async function () {
             const form = this.closest('form');
             const memberId = form.getAttribute('data-id');
-            const authToken = localStorage.getItem('authToken');
 
             if (confirm('Apakah Anda yakin ingin menghapus anggota ini?')) {
                 try {
                     const response = await fetch(`/v1/members/${memberId}`, {
                         method: 'DELETE',
                         headers: {
-                            'Authorization': `Bearer ${authToken}`,
                             'Content-Type': 'application/json',
                         },
                     });
@@ -57,13 +55,11 @@ document.addEventListener("DOMContentLoaded", function () {
             const row = this.closest('tr');
             const nameInput = row.querySelector('.name-input');
             const memberIdSelected = row.querySelector('.delete-form').getAttribute('data-id');
-            const authToken = localStorage.getItem('authToken');
 
             try {
                 const response = await fetch(`/v1/members`, {
                     method: 'PUT',
                     headers: {
-                        'Authorization': `Bearer ${authToken}`,
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({ memberId: memberIdSelected, memberName: nameInput.value })
@@ -93,12 +89,10 @@ document.addEventListener("DOMContentLoaded", function () {
         e.preventDefault(); // Mencegah form submit default
 
         const formData = new FormData(addPersonForm);
-        const authToken = localStorage.getItem('authToken');
 
         fetch('/v1/members', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${authToken}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({

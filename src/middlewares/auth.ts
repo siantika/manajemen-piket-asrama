@@ -1,27 +1,39 @@
-import { Request, Response, NextFunction } from "express";
+import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload, VerifyErrors } from "jsonwebtoken";
 import CONST from "../config/consts";
 
 export const auth = (req: Request, res: Response, next: NextFunction) => {
-  const headerAuth = req.headers["authorization"];
+  const jwtSecret = process.env.JWT_SECRET;
 
-  if (!headerAuth) {
+  if (!jwtSecret) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: "JWT secret is not configured",
+    });
+  }
+
+  const headerAuth = req.headers["authorization"];
+  const cookieToken = req.cookies?.authToken;
+  let bearerToken = cookieToken;
+
+  if (headerAuth) {
+    const tokenParts = headerAuth.split(" ");
+
+    if (tokenParts.length !== 2 || tokenParts[0] !== "Bearer") {
+      return res.status(StatusCodes.UNAUTHORIZED).send("Token format is wrong");
+    }
+
+    bearerToken = tokenParts[1];
+  }
+
+  if (!bearerToken) {
     return res.status(StatusCodes.UNAUTHORIZED).send("Unauthorized");
   }
 
-  const tokenParts = headerAuth.split(" ");
-
-  if (tokenParts.length !== 2 || tokenParts[0] !== "Bearer") {
-    return res.status(StatusCodes.UNAUTHORIZED).send("Token format is wrong");
-  }
-
-  const bearerToken = tokenParts[1];
-
   jwt.verify(
     bearerToken,
-    process.env.JWT_SECRET as string,
-    (err, decodedToken) => {
+    jwtSecret,
+    (err: VerifyErrors | null, decodedToken: string | JwtPayload | undefined) => {
       if (err) {
         return res.status(StatusCodes.UNAUTHORIZED).send("Token not valid!");
       }

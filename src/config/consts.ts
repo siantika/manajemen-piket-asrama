@@ -1,6 +1,10 @@
+import dotenv from "dotenv";
+
+dotenv.config();
+
 const CONST = {
   API_VERSION: process.env.API_VER || "/v1",
-  PORT:  3000,
+  PORT: Number(process.env.PORT) || 3000,
   ROLE: {
     ADMIN: "admin",
   },

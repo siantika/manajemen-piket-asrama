@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
+import { StatusCodes } from "http-status-codes";
 import Joi from "joi";
 import { logger } from "../../../utils/logger";
-import { StatusCodes } from "http-status-codes";
 import { loginAdmin } from "./login";
 
 // Validasi skema
@@ -28,10 +28,18 @@ export const loginAdminHandler = async (req: Request, res: Response) => {
         message: "Invalid credential",
       });
     }
+
+    res.cookie("authToken", response.token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 24 * 60 * 60 * 1000,
+      path: "/",
+    });
+
     return res.status(StatusCodes.OK).json(
       {
         message: "login succeed",
-        token:response.token,
       }
     );
 
@@ -41,4 +49,23 @@ export const loginAdminHandler = async (req: Request, res: Response) => {
       message: "Internal Server Error",
     });
   }
+};
+
+export const validateSessionHandler = async (req: Request, res: Response) => {
+  return res.status(StatusCodes.OK).json({
+    message: "Session valid",
+  });
+};
+
+export const logoutAdminHandler = async (req: Request, res: Response) => {
+  res.clearCookie("authToken", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    path: "/",
+  });
+
+  return res.status(StatusCodes.OK).json({
+    message: "Logout succeed",
+  });
 };

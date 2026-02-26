@@ -1,12 +1,18 @@
 import bcrypt from "bcryptjs";
+import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
 import Admin from "../../../models/admin";
 import { logger } from "../../../utils/logger";
-import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
 
 dotenv.config();
 
 export const loginAdmin = async (username: string, plainPassword: string) => {
+  const jwtSecret = process.env.JWT_SECRET;
+
+  if (!jwtSecret) {
+    throw new Error("JWT_SECRET is required");
+  }
+
   try {
     const admin = await Admin.findOne({ where: { adminUserName: username } });
 
@@ -19,7 +25,7 @@ export const loginAdmin = async (username: string, plainPassword: string) => {
     if (isMatch) {
       const token = jwt.sign(
         { id: admin.adminId, username: admin.adminUserName, role:admin.role},
-        process.env.JWT_SECRET || 'null',
+        jwtSecret,
         { expiresIn: "1d" }
       );
       return {

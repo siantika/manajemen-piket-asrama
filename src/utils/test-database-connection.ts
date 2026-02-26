@@ -1,13 +1,13 @@
-import sequelize from "../config/database";
+import mongoose, { connectDatabase } from "../config/database";
 
 async function testConnection() {
   try {
-    await sequelize.authenticate();
+    await connectDatabase();
     console.log("Database connection successful.");
   } catch (error) {
     console.error("Unable to connect to the database:", error);
   } finally {
-    await sequelize.close();
+    await mongoose.connection.close();
   }
 }
 

@@ -1,5 +1,6 @@
-import { DataTypes, Model, Optional } from "sequelize";
-import sequelize from "../config/database";
+import { randomUUID } from "crypto";
+import { Document, Model, Schema } from "mongoose";
+import mongoose, { connectDatabase } from "../config/database";
 
 export interface IRiwayatPiket {
   piketId: string;
@@ -9,54 +10,104 @@ export interface IRiwayatPiket {
   tanggalPiket: Date;
 }
 
-interface PlaceCreationAttributes extends Optional<IRiwayatPiket, "piketId"> {}
+interface IRiwayatPiketDocument extends IRiwayatPiket, Document {}
 
-class RiwayatPiket
-  extends Model<IRiwayatPiket, PlaceCreationAttributes>
-  implements IRiwayatPiket
-{
-  public piketId!: string;
-  public tempatId!: string;
-  public penghuniId!: string;
-  public statusPiket!: "sudah" | "belum";
-  public tanggalPiket!: Date;
-}
-
-RiwayatPiket.init(
+const riwayatPiketSchema = new Schema<IRiwayatPiketDocument>(
   {
     piketId: {
-      type: DataTypes.UUID,
-      field: "piket_id",
-      defaultValue: DataTypes.UUIDV4,
-      primaryKey: true,
+      type: String,
+      required: true,
+      unique: true,
+      default: () => randomUUID(),
     },
     tempatId: {
-      type: DataTypes.UUID,
-      field: "tempat_id",
-      allowNull: false,
+      type: String,
+      required: true,
     },
     penghuniId: {
-      type: DataTypes.UUID,
-      field: "penghuni_id",
-      allowNull: false,
+      type: String,
+      required: true,
     },
     statusPiket: {
-      type: DataTypes.ENUM("sudah", "belum"),
-      field: "status_piket",
-      allowNull: false,
+      type: String,
+      enum: ["sudah", "belum"],
+      required: true,
     },
     tanggalPiket: {
-      type: DataTypes.DATE,
-      field: "tanggal_piket",
-      allowNull: false,
+      type: Date,
+      required: true,
     },
   },
   {
-    sequelize,
-    modelName: "RiwayatPiket",
-    tableName: "riwayat_piket",
+    collection: "riwayat_piket",
+    versionKey: false,
     timestamps: false,
   }
 );
+
+const RiwayatPiketModel: Model<IRiwayatPiketDocument> =
+  (mongoose.models.RiwayatPiket as Model<IRiwayatPiketDocument>) ||
+  mongoose.model<IRiwayatPiketDocument>("RiwayatPiket", riwayatPiketSchema);
+
+class RiwayatPiket implements IRiwayatPiket {
+  public piketId: string;
+  public tempatId: string;
+  public penghuniId: string;
+  public statusPiket: "sudah" | "belum";
+  public tanggalPiket: Date;
+
+  constructor(data: IRiwayatPiket) {
+    this.piketId = data.piketId;
+    this.tempatId = data.tempatId;
+    this.penghuniId = data.penghuniId;
+    this.statusPiket = data.statusPiket;
+    this.tanggalPiket = data.tanggalPiket;
+  }
+
+  private static toEntity(doc: IRiwayatPiketDocument): RiwayatPiket {
+    return new RiwayatPiket({
+      piketId: doc.piketId,
+      tempatId: doc.tempatId,
+      penghuniId: doc.penghuniId,
+      statusPiket: doc.statusPiket,
+      tanggalPiket: doc.tanggalPiket,
+    });
+  }
+
+  static async create(data: Partial<IRiwayatPiket>): Promise<RiwayatPiket> {
+    await connectDatabase();
+
+    const document = await RiwayatPiketModel.create({
+      piketId: data.piketId || randomUUID(),
+      tempatId: data.tempatId,
+      penghuniId: data.penghuniId,
+      statusPiket: data.statusPiket,
+      tanggalPiket: data.tanggalPiket,
+    });
+
+    return RiwayatPiket.toEntity(document);
+  }
+
+  static async findAll(): Promise<IRiwayatPiket[]> {
+    await connectDatabase();
+    const documents = await RiwayatPiketModel.find().sort({ tanggalPiket: 1 });
+    return documents.map((doc) => RiwayatPiket.toEntity(doc));
+  }
+
+  static async destroy(options: {
+    where?: Partial<IRiwayatPiket>;
+    truncate?: boolean;
+  }): Promise<number> {
+    await connectDatabase();
+
+    if (options?.truncate) {
+      const result = await RiwayatPiketModel.deleteMany({});
+      return result.deletedCount ?? 0;
+    }
+
+    const result = await RiwayatPiketModel.deleteMany(options?.where || {});
+    return result.deletedCount ?? 0;
+  }
+}
 
 export default RiwayatPiket;

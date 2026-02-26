@@ -10,14 +10,12 @@ document.addEventListener("DOMContentLoaded", function () {
             button.addEventListener('click', async function () {
                 const form = this.closest('form');
                 const tempatId = form.getAttribute('data-id');
-                const authToken = localStorage.getItem('authToken');
 
                 if (confirm('Apakah Anda yakin ingin menghapus tempat ini?')) {
                     try {
                         const response = await fetch(`/v1/places/${tempatId}`, {
                             method: 'DELETE',
                             headers: {
-                                'Authorization': `Bearer ${authToken}`,
                                 'Content-Type': 'application/json',
                             },
                         });
@@ -68,13 +66,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 const nameInput = row.querySelector('.name-input');
                 const statusInput = row.querySelector('.status-input');
                 const memberIdSelected = row.querySelector('.delete-form').getAttribute('data-id');
-                const authToken = localStorage.getItem('authToken');
 
                 try {
                     const response = await fetch(`/v1/places`, {
                         method: 'PUT',
                         headers: {
-                            'Authorization': `Bearer ${authToken}`,
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
@@ -113,7 +109,6 @@ document.addEventListener("DOMContentLoaded", function () {
             e.preventDefault(); // Mencegah form submit default
 
             const formData = new FormData(addTempatForm);
-            const authToken = localStorage.getItem('authToken');
             const selectedPlaceName = formData.get('namaTempat');
             const selectedPlaceStatus = formData.get('statusTempat');
 
@@ -121,7 +116,6 @@ document.addEventListener("DOMContentLoaded", function () {
             fetch('/v1/places', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${authToken}`,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({

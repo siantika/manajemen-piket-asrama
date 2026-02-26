@@ -1,25 +1,25 @@
 import { Router } from "express";
-import {
-  addMemberHandler,
-  updateMemberHandler,
-  deleteMemberHandler,
-  readAllMemberHandler,
-  addPlaceHandler,
-  readAllPlacesHandler,
-  updatePlaceHandler,
-  deletePlaceHandler,
-} from "./handlers";
 import { auth } from "../../../middlewares/auth";
+import {
+    addMemberHandler,
+    addPlaceHandler,
+    deleteMemberHandler,
+    deletePlaceHandler,
+    readAllMemberHandler,
+    readAllPlacesHandler,
+    updateMemberHandler,
+    updatePlaceHandler,
+} from "./handlers";
 
 const router = Router();
 
 router.post("/members", auth, addMemberHandler);
-router.get("/members", readAllMemberHandler);
+router.get("/members", auth, readAllMemberHandler);
 router.put("/members", auth, updateMemberHandler);
 router.delete("/members/:memberId", auth, deleteMemberHandler);
 
 router.post("/places", auth, addPlaceHandler);
-router.get("/places", readAllPlacesHandler);
+router.get("/places", auth, readAllPlacesHandler);
 router.put("/places", auth, updatePlaceHandler);
 router.delete("/places/:placeId", auth, deletePlaceHandler);
 
