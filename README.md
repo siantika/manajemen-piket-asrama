@@ -91,3 +91,9 @@ npm test
 - `npm run build` compile TypeScript ke folder `dist`
 - `npm run start:prod` menjalankan hasil build dari `dist/server.js`
 - `npm test` menjalankan test Jest
+- `npm run seed:admin` membuat akun admin awal (default: `admin` / `Admin@123`)
+
+Untuk mengubah credential seed admin, set env berikut sebelum menjalankan script:
+
+- `ADMIN_SEED_USERNAME`
+- `ADMIN_SEED_PASSWORD`
